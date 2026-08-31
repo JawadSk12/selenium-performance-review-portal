@@ -59,11 +59,9 @@ public class Review {
     @Builder.Default
     private ReviewStatus status = ReviewStatus.SUBMITTED;
 
-    @Lob
     @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
 
-    @Lob
     @Column(name = "feedback", columnDefinition = "TEXT")
     private String feedback;
 

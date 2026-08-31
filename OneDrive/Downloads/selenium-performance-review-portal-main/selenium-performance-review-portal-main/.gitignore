@@ -16,9 +16,13 @@ __pycache__/
 *.pyc
 
 # Build & Output
+target/
 dist/
 build/
 out/
+*.class
+*.jar
+*.war
 *.egg-info/
 .next/
 .nuxt/
