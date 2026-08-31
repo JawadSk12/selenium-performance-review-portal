@@ -1,0 +1,23 @@
+/*
+ * Performance Review Portal - Global Stylesheet
+ * Ready for Phase 2 UI Integration (Bootstrap 5 Enhanced)
+ */
+
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #475569;
+    --success-color: #16a34a;
+    --warning-color: #d97706;
+    --danger-color: #dc2626;
+    --background-color: #f8fafc;
+    --card-background: #ffffff;
+    --text-primary: #1e293b;
+    --text-muted: #64748b;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
