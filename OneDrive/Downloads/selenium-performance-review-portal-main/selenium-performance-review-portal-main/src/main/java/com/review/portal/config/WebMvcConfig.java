@@ -8,16 +8,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * Spring Web MVC Configuration.
- * Configures static resources, view resolvers, and route interceptors.
+ * Configures static resources, view resolvers, and route interceptors
+ * for both Employee and Manager portals independently.
  */
 @Configuration
 @RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
+    private final ManagerAuthInterceptor managerAuthInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // Employee Route Protection
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/dashboard", "/review", "/review/**", "/employee/**")
                 .excludePathPatterns(
@@ -27,6 +30,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "/js/**",
                         "/images/**",
                         "/api/**"
+                );
+
+        // Manager Route Protection (Phase 6.1)
+        registry.addInterceptor(managerAuthInterceptor)
+                .addPathPatterns("/manager/**")
+                .excludePathPatterns(
+                        "/manager/login",
+                        "/manager/logout",
+                        "/css/**",
+                        "/js/**",
+                        "/images/**"
                 );
     }
 

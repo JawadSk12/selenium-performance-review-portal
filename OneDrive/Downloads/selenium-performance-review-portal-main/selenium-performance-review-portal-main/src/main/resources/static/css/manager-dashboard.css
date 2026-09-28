@@ -1,0 +1,349 @@
+/* ==========================================================================
+   ENTERPRISE HR MANAGER DASHBOARD STYLESHEET
+   WEEK 6 — PHASE 6.2 (OFFICIAL)
+   Blue Professional Theme | Glass Header | Rounded Cards | Responsive Table
+   ========================================================================== */
+
+:root {
+    --hr-primary: #1d4ed8;
+    --hr-primary-hover: #1e40af;
+    --hr-primary-light: #eff6ff;
+    --hr-primary-border: #bfdbfe;
+    
+    --hr-bg-main: #f8fafc;
+    --hr-card-bg: #ffffff;
+    --hr-text-dark: #0f172a;
+    --hr-text-muted: #64748b;
+    --hr-border: #e2e8f0;
+    
+    --hr-accent-blue: #2563eb;
+    --hr-accent-warning: #d97706;
+    --hr-accent-success: #16a34a;
+    --hr-accent-info: #0284c7;
+
+    --hr-radius-sm: 0.5rem;
+    --hr-radius-md: 0.85rem;
+    --hr-radius-lg: 1.25rem;
+
+    --hr-shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --hr-shadow-hover: 0 10px 15px -3px rgba(37, 99, 235, 0.08), 0 4px 6px -4px rgba(37, 99, 235, 0.05);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--hr-bg-main);
+    color: var(--hr-text-dark);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* --------------------------------------------------------------------------
+   1. Glass Header (No Sidebar)
+   -------------------------------------------------------------------------- */
+.glass-header {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+    z-index: 1020;
+    transition: all 0.2s ease-in-out;
+}
+
+.brand-logo-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--hr-radius-md);
+    background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    box-shadow: 0 4px 10px rgba(29, 78, 216, 0.25);
+}
+
+.brand-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #0f172a;
+}
+
+.brand-subtitle {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--hr-text-muted);
+}
+
+.manager-profile-chip {
+    background: #f1f5f9;
+    border: 1px solid var(--hr-border);
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+}
+
+.manager-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.manager-name {
+    font-size: 0.85rem;
+    line-height: 1.2;
+    color: var(--hr-text-dark);
+}
+
+.manager-email {
+    font-size: 0.72rem;
+    line-height: 1.1;
+}
+
+.btn-logout {
+    border-radius: 0.65rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    transition: all 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. KPI Cards (Rounded, Blue Professional Theme)
+   -------------------------------------------------------------------------- */
+.kpi-card {
+    background-color: var(--hr-card-bg);
+    border: 1px solid var(--hr-border);
+    border-radius: var(--hr-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--hr-shadow-card);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--hr-shadow-hover);
+}
+
+.kpi-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--hr-text-muted);
+}
+
+.kpi-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--hr-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.kpi-icon-blue {
+    background-color: #dbeafe;
+    color: var(--hr-primary);
+}
+
+.kpi-icon-warning {
+    background-color: #fef3c7;
+    color: var(--hr-accent-warning);
+}
+
+.kpi-icon-success {
+    background-color: #dcfce7;
+    color: var(--hr-accent-success);
+}
+
+.kpi-icon-info {
+    background-color: #e0f2fe;
+    color: var(--hr-accent-info);
+}
+
+.kpi-value {
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.kpi-desc {
+    font-size: 0.78rem;
+    color: var(--hr-text-muted);
+}
+
+/* Card Accent Top Borders */
+.kpi-card-blue { border-top: 4px solid var(--hr-accent-blue); }
+.kpi-card-warning { border-top: 4px solid var(--hr-accent-warning); }
+.kpi-card-success { border-top: 4px solid var(--hr-accent-success); }
+.kpi-card-info { border-top: 4px solid var(--hr-accent-info); }
+
+/* --------------------------------------------------------------------------
+   3. Search Bar Section
+   -------------------------------------------------------------------------- */
+.search-card {
+    background-color: var(--hr-card-bg);
+    border: 1px solid var(--hr-border);
+    border-radius: var(--hr-radius-md);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--hr-shadow-card);
+}
+
+.search-input-group {
+    border: 1px solid var(--hr-border);
+    border-radius: 0.65rem;
+    overflow: hidden;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input-group:focus-within {
+    border-color: var(--hr-accent-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.search-icon-wrap {
+    background: transparent;
+    border: none;
+    padding-left: 1rem;
+}
+
+.search-input {
+    border: none;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.92rem;
+    outline: none;
+    box-shadow: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. Pending Review Table (Hover Effects, Enterprise Styling)
+   -------------------------------------------------------------------------- */
+.table-card {
+    background-color: var(--hr-card-bg);
+    border: 1px solid var(--hr-border);
+    border-radius: var(--hr-radius-lg);
+    overflow: hidden;
+}
+
+.table-card-header {
+    background: #f8fafc;
+    padding: 1.15rem 1.5rem;
+    border-bottom: 1px solid var(--hr-border);
+}
+
+.table-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--hr-text-dark);
+}
+
+.table-header-theme th {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 1rem 1.25rem;
+    border-bottom: 2px solid var(--hr-border);
+}
+
+#pendingReviewsTable td {
+    padding: 1rem 1.25rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--hr-border);
+    font-size: 0.9rem;
+}
+
+/* Table Row Hover Effects */
+#pendingReviewsTable tbody tr {
+    transition: background-color 0.15s ease-in-out;
+}
+
+#pendingReviewsTable tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.avatar-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background-color: #e0e7ff;
+    color: #3730a3;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-badge-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-action-review {
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    border: none;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.45rem 1.15rem;
+    box-shadow: 0 2px 6px rgba(29, 78, 216, 0.25);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-action-review:hover {
+    background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(29, 78, 216, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   5. Responsive Design
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .glass-header .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .brand-title {
+        font-size: 1rem;
+    }
+    
+    .brand-subtitle {
+        display: none;
+    }
+    
+    .kpi-value {
+        font-size: 1.85rem;
+    }
+}
