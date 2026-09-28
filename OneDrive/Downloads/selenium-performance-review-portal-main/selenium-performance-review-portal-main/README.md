@@ -1,4 +1,4 @@
-# Performance Review Portal A
+# Performance Review Portal
 Welcome to the **Selenium Performance Review Portal** repository. This portal is designed for managing and evaluating employee performance reviews, integrating automated testing and performance tracking workflows with Selenium.
 
 ---
