@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Evaluation - Performance Review Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- Evaluation Stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/manager-review.css}" href="/css/manager-review.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="eval-header">
+    <div class="eval-header-brand">
+        <div class="eval-header-icon">
+            <i class="bi bi-clipboard2-check"></i>
+        </div>
+        <div>
+            <h1 class="eval-header-title">Review Evaluation Engine</h1>
+            <span class="eval-header-subtitle">Performance Review Management</span>
+        </div>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+        <div class="d-none d-md-flex flex-column text-end">
+            <span class="fw-semibold small" id="managerNameDisplay" th:text="${managerName}">Ahmed Khan</span>
+            <span class="text-muted" style="font-size: 0.72rem;" id="managerEmailDisplay" th:text="${managerEmail}">manager@gmail.com</span>
+        </div>
+        <a th:href="@{/manager/dashboard}" class="btn-back">
+            <i class="bi bi-arrow-left"></i> Dashboard
+        </a>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="eval-container">
+
+    <!-- Page Title Row -->
+    <div class="d-flex align-items-center gap-2 mb-4">
+        <i class="bi bi-person-check-fill fs-4 text-primary"></i>
+        <div>
+            <h2 class="h5 fw-bold mb-0 text-dark">Evaluating:
+                <span class="text-primary" th:text="${review.employee != null ? review.employee.name : 'Employee'}">Employee Name</span>
+            </h2>
+            <span class="text-muted small">
+                Review ID #<span th:text="${review.id}">1</span> &bull;
+                <span th:text="${review.employee != null ? review.employee.department : ''}">Department</span>
+                <span th:text="${review.employee != null && review.employee.designation != null ? ' · ' + review.employee.designation : ''}"></span>
+            </span>
+        </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         PANEL 1: Employee Self-Review (Read-Only)
+         ───────────────────────────────────────────────────────────────────── -->
+    <div class="self-review-card">
+        <div class="card-section-title">
+            <i class="bi bi-person-lines-fill text-primary"></i>
+            Employee Self-Assessment (Read-Only)
+        </div>
+
+        <!-- Employee Info Row -->
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
+            <div class="employee-name-badge" th:text="${review.employee != null ? review.employee.name : 'Unknown'}">Employee Name</div>
+            <span class="meta-pill">
+                <i class="bi bi-building"></i>
+                <span th:text="${review.employee != null ? review.employee.department : '—'}">IT</span>
+            </span>
+            <span class="meta-pill">
+                <i class="bi bi-calendar3"></i>
+                <span th:text="${review.reviewDate != null ? #temporals.format(review.reviewDate, 'dd MMM yyyy') : '—'}">Date</span>
+            </span>
+            <span class="meta-pill">
+                <i class="bi bi-envelope"></i>
+                <span th:text="${review.employee != null ? review.employee.email : '—'}">email</span>
+            </span>
+        </div>
+
+        <!-- Self-Assessed Competency Scores -->
+        <h6 class="fw-bold small text-muted text-uppercase mb-3" style="letter-spacing: 0.05em;">
+            <i class="bi bi-bar-chart-line me-1"></i> Self-Assessed Scores
+        </h6>
+        <div class="score-grid mb-4">
+            <div class="score-chip">
+                <span class="score-chip-label">Technical</span>
+                <span class="score-chip-value" th:text="${review.technical != null ? review.technical : '—'}">9</span>
+                <span class="score-chip-max">/10</span>
+            </div>
+            <div class="score-chip">
+                <span class="score-chip-label">Communication</span>
+                <span class="score-chip-value" th:text="${review.communication != null ? review.communication : '—'}">8</span>
+                <span class="score-chip-max">/10</span>
+            </div>
+            <div class="score-chip">
+                <span class="score-chip-label">Teamwork</span>
+                <span class="score-chip-value" th:text="${review.teamwork != null ? review.teamwork : '—'}">9</span>
+                <span class="score-chip-max">/10</span>
+            </div>
+            <div class="score-chip">
+                <span class="score-chip-label">Problem Solving</span>
+                <span class="score-chip-value" th:text="${review.problemSolving != null ? review.problemSolving : '—'}">8</span>
+                <span class="score-chip-max">/10</span>
+            </div>
+        </div>
+
+        <!-- Achievements -->
+        <div class="mb-3" th:if="${review.achievement != null}">
+            <h6 class="fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.05em;">
+                <i class="bi bi-trophy me-1 text-warning"></i> Achievements &amp; Contributions
+            </h6>
+            <div class="review-text-block" th:text="${review.achievement}">Achievements text.</div>
+        </div>
+
+        <!-- Future Goals -->
+        <div th:if="${review.futureGoal != null}">
+            <h6 class="fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.05em;">
+                <i class="bi bi-compass me-1 text-info"></i> Future Goals &amp; Targets
+            </h6>
+            <div class="review-text-block" th:text="${review.futureGoal}">Goals text.</div>
+        </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         PANEL 2: Manager Evaluation Form
+         ───────────────────────────────────────────────────────────────────── -->
+    <div class="eval-form-card">
+        <h5 class="fw-bold mb-4" style="font-size: 1rem;">
+            <i class="bi bi-pencil-square text-primary me-2"></i>
+            Manager Evaluation
+        </h5>
+
+        <form th:action="@{'/manager/review/' + ${review.id} + '/evaluate'}"
+              method="post"
+              id="evalForm"
+              th:object="${evaluationDTO}">
+            <input type="hidden" th:field="*{reviewId}">
+
+            <!-- Technical Score -->
+            <div class="mb-4">
+                <label class="form-label" for="technicalRange">Technical
+                    <span class="text-muted fw-normal small">(1 = Beginner, 10 = Expert)</span>
+                </label>
+                <div class="score-range-group">
+                    <input type="range" class="form-range" id="technicalRange"
+                           name="technical" min="1" max="10" step="1"
+                           th:value="${evaluationDTO.technical != null ? evaluationDTO.technical : 5}"
+                           oninput="syncScore('technicalRange','technicalDisplay'); recalcOverall()">
+                    <div class="score-range-display" id="technicalDisplay"
+                         th:text="${evaluationDTO.technical != null ? evaluationDTO.technical : 5}">5</div>
+                </div>
+            </div>
+
+            <!-- Communication Score -->
+            <div class="mb-4">
+                <label class="form-label" for="communicationRange">Communication
+                    <span class="text-muted fw-normal small">(1 = Poor, 10 = Excellent)</span>
+                </label>
+                <div class="score-range-group">
+                    <input type="range" class="form-range" id="communicationRange"
+                           name="communication" min="1" max="10" step="1"
+                           th:value="${evaluationDTO.communication != null ? evaluationDTO.communication : 5}"
+                           oninput="syncScore('communicationRange','communicationDisplay'); recalcOverall()">
+                    <div class="score-range-display" id="communicationDisplay"
+                         th:text="${evaluationDTO.communication != null ? evaluationDTO.communication : 5}">5</div>
+                </div>
+            </div>
+
+            <!-- Teamwork Score -->
+            <div class="mb-4">
+                <label class="form-label" for="teamworkRange">Teamwork
+                    <span class="text-muted fw-normal small">(1 = Individual, 10 = Team Player)</span>
+                </label>
+                <div class="score-range-group">
+                    <input type="range" class="form-range" id="teamworkRange"
+                           name="teamwork" min="1" max="10" step="1"
+                           th:value="${evaluationDTO.teamwork != null ? evaluationDTO.teamwork : 5}"
+                           oninput="syncScore('teamworkRange','teamworkDisplay'); recalcOverall()">
+                    <div class="score-range-display" id="teamworkDisplay"
+                         th:text="${evaluationDTO.teamwork != null ? evaluationDTO.teamwork : 5}">5</div>
+                </div>
+            </div>
+
+            <!-- Problem Solving Score -->
+            <div class="mb-4">
+                <label class="form-label" for="problemSolvingRange">Problem Solving
+                    <span class="text-muted fw-normal small">(1 = Basic, 10 = Advanced)</span>
+                </label>
+                <div class="score-range-group">
+                    <input type="range" class="form-range" id="problemSolvingRange"
+                           name="problemSolving" min="1" max="10" step="1"
+                           th:value="${evaluationDTO.problemSolving != null ? evaluationDTO.problemSolving : 5}"
+                           oninput="syncScore('problemSolvingRange','problemSolvingDisplay'); recalcOverall()">
+                    <div class="score-range-display" id="problemSolvingDisplay"
+                         th:text="${evaluationDTO.problemSolving != null ? evaluationDTO.problemSolving : 5}">5</div>
+                </div>
+            </div>
+
+            <!-- Manager Comment -->
+            <div class="mb-4">
+                <label class="form-label" for="managerComment">
+                    <i class="bi bi-chat-left-text me-1"></i> Manager Comment
+                </label>
+                <textarea id="managerComment" name="managerComment" class="form-control"
+                          rows="4" placeholder="Provide detailed feedback, observations, and recommendations for this employee..."
+                          th:text="${evaluationDTO.managerComment}"></textarea>
+            </div>
+        </form>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         PANEL 3: Calculated Overall Score & Grade (Live Preview)
+         ───────────────────────────────────────────────────────────────────── -->
+    <div class="result-bar">
+        <div>
+            <div class="result-bar-label">Calculated Overall Score</div>
+            <div class="result-bar-score" id="overallScoreDisplay">5.00</div>
+            <div class="text-muted small">Formula: (Technical + Communication + Teamwork + Problem Solving) ÷ 4</div>
+        </div>
+        <div class="text-end">
+            <div class="result-bar-label mb-1">Performance Grade</div>
+            <div class="grade-badge grade-needs" id="gradeBadge">
+                <i class="bi bi-award-fill"></i>
+                <span id="gradeLabel">Needs Improvement</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─────────────────────────────────────────────────────────────────────
+         PANEL 4: Action Buttons — Approve / Reject
+         ───────────────────────────────────────────────────────────────────── -->
+    <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center pb-5">
+        <a th:href="@{/manager/dashboard}" class="btn-back">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+        <div class="d-flex gap-3">
+            <!-- Reject Button -->
+            <button type="button" class="btn-reject"
+                    onclick="submitEvaluation('reject')"
+                    id="rejectBtn">
+                <i class="bi bi-x-circle-fill me-1"></i> Reject
+            </button>
+            <!-- Approve Button -->
+            <button type="button" class="btn-approve"
+                    onclick="submitEvaluation('approve')"
+                    id="approveBtn">
+                <i class="bi bi-check-circle-fill me-1"></i> Approve
+            </button>
+        </div>
+    </div>
+
+</div><!-- /eval-container -->
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // ──────────────────────────────────────────────────────────────────────
+    // Score Sync: update display div when slider moves
+    // ──────────────────────────────────────────────────────────────────────
+    function syncScore(rangeId, displayId) {
+        const val = document.getElementById(rangeId).value;
+        document.getElementById(displayId).textContent = val;
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
+    // Recalculate Overall Score live:
+    // (Technical + Communication + Teamwork + ProblemSolving) / 4
+    // ──────────────────────────────────────────────────────────────────────
+    function recalcOverall() {
+        const t  = parseInt(document.getElementById('technicalRange').value)     || 0;
+        const c  = parseInt(document.getElementById('communicationRange').value)  || 0;
+        const tw = parseInt(document.getElementById('teamworkRange').value)       || 0;
+        const ps = parseInt(document.getElementById('problemSolvingRange').value) || 0;
+
+        const overall = (t + c + tw + ps) / 4;
+        const rounded = Math.round(overall * 100) / 100;
+
+        document.getElementById('overallScoreDisplay').textContent = rounded.toFixed(2);
+        updateGradeBadge(rounded);
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
+    // Grade badge: Outstanding / Excellent / Good / Needs Improvement
+    // ──────────────────────────────────────────────────────────────────────
+    function updateGradeBadge(score) {
+        const badge = document.getElementById('gradeBadge');
+        const label = document.getElementById('gradeLabel');
+
+        badge.className = 'grade-badge ';
+        let grade = '';
+
+        if (score >= 9.0) {
+            grade = 'Outstanding';
+            badge.classList.add('grade-outstanding');
+        } else if (score >= 8.0) {
+            grade = 'Excellent';
+            badge.classList.add('grade-excellent');
+        } else if (score >= 7.0) {
+            grade = 'Good';
+            badge.classList.add('grade-good');
+        } else {
+            grade = 'Needs Improvement';
+            badge.classList.add('grade-needs');
+        }
+        label.textContent = grade;
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
+    // Submit: set action hidden field and submit the form
+    // ──────────────────────────────────────────────────────────────────────
+    function submitEvaluation(action) {
+        const form = document.getElementById('evalForm');
+
+        // Remove any existing action input
+        const existing = form.querySelector('input[name="action"]');
+        if (existing) existing.remove();
+
+        const actionInput = document.createElement('input');
+        actionInput.type  = 'hidden';
+        actionInput.name  = 'action';
+        actionInput.value = action;
+        form.appendChild(actionInput);
+
+        form.submit();
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
+    // Init: set all displays on page load
+    // ──────────────────────────────────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', function () {
+        syncScore('technicalRange',     'technicalDisplay');
+        syncScore('communicationRange', 'communicationDisplay');
+        syncScore('teamworkRange',      'teamworkDisplay');
+        syncScore('problemSolvingRange','problemSolvingDisplay');
+        recalcOverall();
+    });
+</script>
+</body>
+</html>
