@@ -49,6 +49,9 @@ public class Employee {
     @Column(name = "designation", length = 80)
     private String designation;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     private Manager manager;
