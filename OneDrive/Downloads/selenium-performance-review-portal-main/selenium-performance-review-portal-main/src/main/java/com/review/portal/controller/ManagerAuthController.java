@@ -91,31 +91,5 @@ public class ManagerAuthController {
         redirectAttributes.addFlashAttribute("logoutMessage", "You have been logged out of the Manager Workspace.");
         return "redirect:/manager/login?logout=true";
     }
-
-    /**
-     * Temporary placeholder for /manager/dashboard until Phase 6.2 dashboard is built.
-     */
-    @GetMapping("/manager/dashboard")
-    @ResponseBody
-    public String managerDashboardPlaceholder(HttpSession session) {
-        String managerName = (String) session.getAttribute(ManagerAuthServiceImpl.SESSION_MANAGER_NAME);
-        String managerEmail = (String) session.getAttribute(ManagerAuthServiceImpl.SESSION_MANAGER_EMAIL);
-        Long managerId = (Long) session.getAttribute(ManagerAuthServiceImpl.SESSION_MANAGER_ID);
-
-        return "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'>" +
-                "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
-                "<title>Manager Dashboard - Workspace</title>" +
-                "<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>" +
-                "<style>body{background:#090d16;color:#f1f5f9;font-family:system-ui,-apple-system,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;}</style>" +
-                "</head><body><div class='card bg-dark border-secondary p-4 shadow-lg text-center' style='max-width:500px;'>" +
-                "<h3 class='text-primary mb-2'>Manager Workspace</h3>" +
-                "<p class='text-muted small mb-3'>Phase 6.1 Authentication Active &bull; Dashboard Coming in Phase 6.2</p>" +
-                "<div class='alert alert-secondary text-start small mb-3'>" +
-                "<div><strong>Manager Name:</strong> " + (managerName != null ? managerName : "N/A") + "</div>" +
-                "<div><strong>Manager Email:</strong> " + (managerEmail != null ? managerEmail : "N/A") + "</div>" +
-                "<div><strong>Manager ID:</strong> " + (managerId != null ? managerId : "N/A") + "</div>" +
-                "</div>" +
-                "<a href='/manager/logout' class='btn btn-outline-danger btn-sm'>Logout</a>" +
-                "</div></body></html>";
-    }
 }
+
