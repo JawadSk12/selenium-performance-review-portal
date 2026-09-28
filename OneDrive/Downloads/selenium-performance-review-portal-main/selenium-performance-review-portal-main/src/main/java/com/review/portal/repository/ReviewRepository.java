@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * Spring Data JPA Repository for Review entity management and dashboard queries.
+ * Spring Data JPA Repository for Review entity management, evaluation engine and dashboard queries.
  */
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {

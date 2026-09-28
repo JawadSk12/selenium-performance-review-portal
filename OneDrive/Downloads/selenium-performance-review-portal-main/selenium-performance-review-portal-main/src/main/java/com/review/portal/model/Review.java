@@ -64,6 +64,12 @@ public class Review {
     @Column(name = "overall_score")
     private Double overallScore;
 
+    @Column(name = "manager_comment", columnDefinition = "TEXT")
+    private String managerComment;
+
+    @Column(name = "approved_date")
+    private LocalDate approvedDate;
+
     @Convert(converter = ReviewStatusConverter.class)
     @Column(name = "status", length = 20)
     @Builder.Default
@@ -72,6 +78,18 @@ public class Review {
     @Column(name = "review_date")
     @Builder.Default
     private LocalDate reviewDate = LocalDate.now();
+
+    /**
+     * Returns a grade label based on overallScore.
+     * 9–10: Outstanding | 8–8.9: Excellent | 7–7.9: Good | Below 7: Needs Improvement
+     */
+    public String getGrade() {
+        if (overallScore == null) return "—";
+        if (overallScore >= 9.0) return "Outstanding";
+        if (overallScore >= 8.0) return "Excellent";
+        if (overallScore >= 7.0) return "Good";
+        return "Needs Improvement";
+    }
 
     @PrePersist
     @PreUpdate
