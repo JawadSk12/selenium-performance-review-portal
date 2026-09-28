@@ -11,9 +11,10 @@ import java.util.List;
 
 /**
  * Entity representing a Manager in the organization who reviews employee performance.
+ * Maps to PostgreSQL 'manager' table.
  */
 @Entity
-@Table(name = "managers")
+@Table(name = "manager")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -38,8 +39,10 @@ public class Manager {
     @Column(name = "email", nullable = false, unique = true, length = 120)
     private String email;
 
-    @NotBlank(message = "Department is required")
-    @Column(name = "department", nullable = false, length = 80)
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "department", length = 60)
     private String department;
 
     @Builder.Default

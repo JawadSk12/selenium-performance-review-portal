@@ -11,9 +11,10 @@ import java.util.List;
 
 /**
  * Entity representing an Employee who creates performance reviews and belongs to a department.
+ * Maps to PostgreSQL 'employee' table.
  */
 @Entity
-@Table(name = "employees")
+@Table(name = "employee")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,10 +29,6 @@ public class Employee {
     @Column(name = "emp_id")
     private Long id;
 
-    @NotBlank(message = "Employee code is required")
-    @Column(name = "employee_code", nullable = false, unique = true, length = 50)
-    private String employeeCode;
-
     @NotBlank(message = "Employee name is required")
     @Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     @Column(name = "name", nullable = false, length = 100)
@@ -42,15 +39,17 @@ public class Employee {
     @Column(name = "email", nullable = false, unique = true, length = 120)
     private String email;
 
-    @NotBlank(message = "Department is required")
-    @Column(name = "department", nullable = false, length = 80)
-    private String department;
-
-    @Column(name = "designation", length = 80)
-    private String designation;
-
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "department", length = 60)
+    private String department;
+
+    @Column(name = "designation", length = 60)
+    private String designation;
+
+    @Column(name = "employee_code", length = 50)
+    private String employeeCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
