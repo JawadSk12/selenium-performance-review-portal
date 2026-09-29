@@ -14,8 +14,9 @@
     <groupId>com.review.portal</groupId>
     <artifactId>selenium-performance-review-portal</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>selenium-performance-review-portal</name>
-    <description>Performance Review Portal Backend - Phase 1</description>
+    <description>Performance Review Portal Backend - Week 7 WAR Deployment Ready</description>
 
     <properties>
         <java.version>17</java.version>
@@ -69,6 +70,13 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- Tomcat (provided scope — external Tomcat container will supply it at runtime) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Spring Boot Starter Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,6 +86,8 @@
     </dependencies>
 
     <build>
+        <!-- WAR artifact name for Jenkins archive and Tomcat deployment -->
+        <finalName>performance-review-portal</finalName>
         <plugins>
             <!-- Spring Boot Maven Plugin -->
             <plugin>
