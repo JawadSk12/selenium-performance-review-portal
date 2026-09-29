@@ -91,3 +91,8 @@ pytest tests/
 ## 📜 License
 
 This project is licensed under the MIT License.
+
+
+## Week 7
+
+Jenkins Continuous Integration configured successfully.
