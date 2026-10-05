@@ -98,14 +98,9 @@ pipeline {
 
                     echo Waiting for Tomcat to deploy the application...
 
-                    timeout /t 15 /nobreak >nul
+                    powershell -NoProfile -Command "$deadline=(Get-Date).AddSeconds(60); while ((Get-Date) -lt $deadline -and -not (Test-Path 'C:\\Tomcat\\webapps\\performance-review-portal')) { Start-Sleep -Seconds 2 }; if (-not (Test-Path 'C:\\Tomcat\\webapps\\performance-review-portal')) { Write-Host 'ERROR: Tomcat did not extract the WAR within 60 seconds.'; exit 1 }"
 
-                    echo Checking Tomcat deployment...
-
-                    if not exist "%TOMCAT_HOME%\\webapps\\%APP_NAME%" (
-                        echo ERROR: Tomcat did not extract the WAR.
-                        exit /b 1
-                    )
+                    echo Tomcat application directory found successfully.
 
                     echo ==========================================
                     echo TOMCAT DEPLOYMENT SUCCESSFUL
