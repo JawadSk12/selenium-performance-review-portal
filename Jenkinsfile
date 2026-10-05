@@ -19,6 +19,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
+
                 echo '=========================================='
                 echo 'STAGE 1: CHECKOUT'
                 echo '=========================================='
@@ -31,6 +32,7 @@ pipeline {
 
         stage('Build') {
             steps {
+
                 echo '=========================================='
                 echo 'STAGE 2: BUILD'
                 echo '=========================================='
@@ -41,10 +43,61 @@ pipeline {
             }
         }
 
+        stage('Continuous Testing') {
+            steps {
+
+                echo '=========================================='
+                echo 'STAGE 3: CONTINUOUS TESTING'
+                echo '=========================================='
+
+                echo 'Running unit tests and Selenium WebDriver tests...'
+
+                bat 'mvn test'
+
+                echo 'All tests completed successfully.'
+            }
+
+            post {
+
+                always {
+
+                    echo 'Publishing Maven Surefire test reports...'
+
+                    junit(
+                        testResults: 'target/surefire-reports/*.xml',
+                        allowEmptyResults: false
+                    )
+
+                    echo 'Test reports published successfully.'
+                }
+
+                success {
+
+                    echo '=========================================='
+                    echo 'CONTINUOUS TESTING PASSED'
+                    echo '=========================================='
+
+                    echo 'All unit tests and Selenium tests passed.'
+                    echo 'Deployment is allowed to continue.'
+                }
+
+                failure {
+
+                    echo '=========================================='
+                    echo 'CONTINUOUS TESTING FAILED'
+                    echo '=========================================='
+
+                    echo 'One or more tests failed.'
+                    echo 'Deployment will be stopped.'
+                }
+            }
+        }
+
         stage('Package') {
             steps {
+
                 echo '=========================================='
-                echo 'STAGE 3: PACKAGE'
+                echo 'STAGE 4: PACKAGE'
                 echo '=========================================='
 
                 bat 'mvn clean package -DskipTests'
@@ -55,8 +108,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
+
                 echo '=========================================='
-                echo 'STAGE 4: DEPLOY'
+                echo 'STAGE 5: DEPLOY'
                 echo '=========================================='
 
                 echo "Application: ${env.APP_NAME}"
@@ -116,24 +170,38 @@ pipeline {
     post {
 
         success {
+
             echo '=========================================='
-            echo 'WEEK 8 PIPELINE SUCCESS'
+            echo 'WEEK 10 PIPELINE SUCCESS'
             echo '=========================================='
+
             echo "Application: ${env.APP_NAME}"
             echo "Environment: ${params.DEPLOY_ENV}"
             echo "Tomcat: ${env.TOMCAT_HOME}"
+
             echo 'Checkout: SUCCESS'
             echo 'Build: SUCCESS'
+            echo 'Continuous Testing: SUCCESS'
+            echo 'Test Report: PUBLISHED'
             echo 'Package: SUCCESS'
             echo 'Deploy: SUCCESS'
+
             echo 'Application URL: http://localhost:8081/performance-review-portal/'
+
+            echo '=========================================='
+            echo 'WEEK 10 CONTINUOUS TESTING COMPLETED'
+            echo '=========================================='
         }
 
         failure {
+
             echo '=========================================='
-            echo 'WEEK 8 PIPELINE FAILED'
+            echo 'WEEK 10 PIPELINE FAILED'
             echo '=========================================='
-            echo 'Check the Jenkins console output for the failed stage.'
+
+            echo 'One or more pipeline stages failed.'
+            echo 'If Continuous Testing failed, deployment was automatically stopped.'
+            echo 'Check the Jenkins console output and test report.'
         }
     }
 }

@@ -2,19 +2,21 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>com.review.portal</groupId>
     <artifactId>selenium-performance-review-portal</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
+
     <name>selenium-performance-review-portal</name>
     <description>Performance Review Portal Backend - Week 7 WAR Deployment Ready</description>
 
@@ -26,6 +28,7 @@
     </properties>
 
     <dependencies>
+
         <!-- Spring Boot Web Starter for MVC & REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -83,12 +86,24 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Selenium WebDriver for Week 9 UI Testing -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.50.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
+
         <!-- WAR artifact name for Jenkins archive and Tomcat deployment -->
         <finalName>performance-review-portal</finalName>
+
         <plugins>
+
             <!-- Spring Boot Maven Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -102,7 +117,8 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <!-- Maven Compiler Plugin with Java 21 & Lombok Annotation Processor -->
+
+            <!-- Maven Compiler Plugin with Java 17 & Lombok Annotation Processor -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -119,6 +135,8 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
+
 </project>
