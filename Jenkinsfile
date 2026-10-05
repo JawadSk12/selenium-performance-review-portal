@@ -13,6 +13,7 @@ pipeline {
     environment {
         APP_NAME = 'performance-review-portal'
         TOMCAT_HOME = 'C:\\Tomcat'
+        APP_URL = 'http://localhost:8081/login'
     }
 
     stages {
@@ -116,18 +117,23 @@ pipeline {
                 echo "Application: ${env.APP_NAME}"
                 echo "Deployment environment: ${params.DEPLOY_ENV}"
                 echo "Tomcat location: ${env.TOMCAT_HOME}"
+                echo "Application URL: ${env.APP_URL}"
 
                 bat '''
-                    echo Checking WAR file...
+                    echo ==========================================
+                    echo CHECKING WAR FILE
+                    echo ==========================================
 
-                    if not exist "target\\performance-review-portal.war" (
+                    if not exist "target\\%APP_NAME%.war" (
                         echo ERROR: WAR file not found.
                         exit /b 1
                     )
 
                     echo WAR file found successfully.
 
-                    echo Removing previous deployed application...
+                    echo ==========================================
+                    echo REMOVING PREVIOUS DEPLOYMENT
+                    echo ==========================================
 
                     if exist "%TOMCAT_HOME%\\webapps\\%APP_NAME%" (
                         rmdir /S /Q "%TOMCAT_HOME%\\webapps\\%APP_NAME%"
@@ -139,7 +145,9 @@ pipeline {
 
                     echo Previous deployment removed.
 
-                    echo Copying new WAR to Tomcat...
+                    echo ==========================================
+                    echo COPYING NEW WAR TO TOMCAT
+                    echo ==========================================
 
                     copy /Y "target\\%APP_NAME%.war" "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war"
 
@@ -150,15 +158,30 @@ pipeline {
 
                     echo WAR copied successfully.
 
-                    echo Waiting for Tomcat to deploy the application...
+                    echo ==========================================
+                    echo WAITING FOR APPLICATION
+                    echo ==========================================
 
-                    powershell -NoProfile -Command "$deadline=(Get-Date).AddSeconds(60); while ((Get-Date) -lt $deadline -and -not (Test-Path 'C:\\Tomcat\\webapps\\performance-review-portal')) { Start-Sleep -Seconds 2 }; if (-not (Test-Path 'C:\\Tomcat\\webapps\\performance-review-portal')) { Write-Host 'ERROR: Tomcat did not extract the WAR within 60 seconds.'; exit 1 }"
+                    echo Waiting for the deployed application to become available...
 
-                    echo Tomcat application directory found successfully.
+                    powershell -NoProfile -Command "$deadline=(Get-Date).AddSeconds(90); $url='http://localhost:8081/login'; $success=$false; while ((Get-Date) -lt $deadline) { try { $response=Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5; if ($response.StatusCode -eq 200) { $success=$true; break } } catch { }; Start-Sleep -Seconds 3 }; if (-not $success) { Write-Host 'ERROR: Application did not respond successfully on http://localhost:8081/login within 90 seconds.'; exit 1 }"
+
+                    if errorlevel 1 (
+                        echo ERROR: Application health check failed.
+                        exit /b 1
+                    )
+
+                    echo ==========================================
+                    echo APPLICATION HEALTH CHECK PASSED
+                    echo ==========================================
+
+                    echo Application responded successfully.
+                    echo URL: http://localhost:8081/login
 
                     echo ==========================================
                     echo TOMCAT DEPLOYMENT SUCCESSFUL
                     echo ==========================================
+
                     echo Application: %APP_NAME%
                     echo Environment: %DEPLOY_ENV%
                     echo URL: http://localhost:8081/%APP_NAME%/
@@ -185,6 +208,7 @@ pipeline {
             echo 'Test Report: PUBLISHED'
             echo 'Package: SUCCESS'
             echo 'Deploy: SUCCESS'
+            echo 'Application Health Check: SUCCESS'
 
             echo 'Application URL: http://localhost:8081/performance-review-portal/'
 
@@ -200,8 +224,22 @@ pipeline {
             echo '=========================================='
 
             echo 'One or more pipeline stages failed.'
+
             echo 'If Continuous Testing failed, deployment was automatically stopped.'
-            echo 'Check the Jenkins console output and test report.'
+
+            echo 'Check the Jenkins console output and published test report.'
+
+            echo '=========================================='
+            echo 'FAILURE ANALYSIS'
+            echo '=========================================='
+
+            echo 'Possible failure points:'
+            echo '1. Checkout'
+            echo '2. Build'
+            echo '3. Continuous Testing'
+            echo '4. Package'
+            echo '5. Deployment'
+            echo '6. Application Health Check'
         }
     }
 }
