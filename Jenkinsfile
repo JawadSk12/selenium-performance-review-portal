@@ -20,7 +20,6 @@ pipeline {
 
         stage('Checkout') {
             steps {
-
                 echo '=========================================='
                 echo 'STAGE 1: CHECKOUT'
                 echo '=========================================='
@@ -33,7 +32,6 @@ pipeline {
 
         stage('Build') {
             steps {
-
                 echo '=========================================='
                 echo 'STAGE 2: BUILD'
                 echo '=========================================='
@@ -44,11 +42,92 @@ pipeline {
             }
         }
 
+        stage('Prepare Test Application') {
+            steps {
+                echo '=========================================='
+                echo 'STAGE 3: PREPARE TEST APPLICATION'
+                echo '=========================================='
+
+                echo 'Creating application WAR for Selenium testing...'
+
+                bat 'mvn clean package -DskipTests'
+
+                echo 'WAR package created.'
+
+                bat '''
+                    echo ==========================================
+                    echo STOPPING OLD TOMCAT INSTANCE
+                    echo ==========================================
+
+                    if exist "%TOMCAT_HOME%\\bin\\shutdown.bat" (
+                        call "%TOMCAT_HOME%\\bin\\shutdown.bat"
+                    )
+
+                    timeout /t 5 /nobreak >nul
+
+                    echo ==========================================
+                    echo CLEANING PREVIOUS APPLICATION
+                    echo ==========================================
+
+                    if exist "%TOMCAT_HOME%\\webapps\\%APP_NAME%" (
+                        rmdir /S /Q "%TOMCAT_HOME%\\webapps\\%APP_NAME%"
+                    )
+
+                    if exist "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war" (
+                        del /Q "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war"
+                    )
+
+                    echo ==========================================
+                    echo DEPLOYING WAR FOR TESTING
+                    echo ==========================================
+
+                    if not exist "target\\%APP_NAME%.war" (
+                        echo ERROR: WAR file not found.
+                        exit /b 1
+                    )
+
+                    copy /Y "target\\%APP_NAME%.war" "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war"
+
+                    if errorlevel 1 (
+                        echo ERROR: Failed to copy WAR.
+                        exit /b 1
+                    )
+
+                    echo WAR copied successfully.
+
+                    echo ==========================================
+                    echo STARTING TOMCAT
+                    echo ==========================================
+
+                    call "%TOMCAT_HOME%\\bin\\startup.bat"
+
+                    echo Tomcat startup command executed.
+
+                    echo ==========================================
+                    echo WAITING FOR APPLICATION
+                    echo ==========================================
+
+                    powershell -NoProfile -Command "$deadline=(Get-Date).AddSeconds(120); $success=$false; while ((Get-Date) -lt $deadline) { try { $response=Invoke-WebRequest -Uri 'http://localhost:8081/login' -UseBasicParsing -TimeoutSec 5; if ($response.StatusCode -eq 200 -or $response.StatusCode -eq 302) { $success=$true; break } } catch { }; Start-Sleep -Seconds 3 }; if (-not $success) { Write-Host 'ERROR: Application did not become available on port 8081.'; exit 1 }"
+
+                    if errorlevel 1 (
+                        echo ERROR: Application startup/health check failed.
+                        exit /b 1
+                    )
+
+                    echo ==========================================
+                    echo TEST APPLICATION READY
+                    echo ==========================================
+
+                    echo Application is running on:
+                    echo http://localhost:8081/login
+                '''
+            }
+        }
+
         stage('Continuous Testing') {
             steps {
-
                 echo '=========================================='
-                echo 'STAGE 3: CONTINUOUS TESTING'
+                echo 'STAGE 4: CONTINUOUS TESTING'
                 echo '=========================================='
 
                 echo 'Running unit tests and Selenium WebDriver tests...'
@@ -61,7 +140,6 @@ pipeline {
             post {
 
                 always {
-
                     echo 'Publishing Maven Surefire test reports...'
 
                     junit(
@@ -73,7 +151,6 @@ pipeline {
                 }
 
                 success {
-
                     echo '=========================================='
                     echo 'CONTINUOUS TESTING PASSED'
                     echo '=========================================='
@@ -83,22 +160,20 @@ pipeline {
                 }
 
                 failure {
-
                     echo '=========================================='
                     echo 'CONTINUOUS TESTING FAILED'
                     echo '=========================================='
 
                     echo 'One or more tests failed.'
-                    echo 'Deployment will be stopped.'
+                    echo 'Final deployment will be stopped.'
                 }
             }
         }
 
         stage('Package') {
             steps {
-
                 echo '=========================================='
-                echo 'STAGE 4: PACKAGE'
+                echo 'STAGE 5: PACKAGE'
                 echo '=========================================='
 
                 bat 'mvn clean package -DskipTests'
@@ -109,9 +184,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-
                 echo '=========================================='
-                echo 'STAGE 5: DEPLOY'
+                echo 'STAGE 6: DEPLOY'
                 echo '=========================================='
 
                 echo "Application: ${env.APP_NAME}"
@@ -146,7 +220,7 @@ pipeline {
                     echo Previous deployment removed.
 
                     echo ==========================================
-                    echo COPYING NEW WAR TO TOMCAT
+                    echo COPYING FINAL WAR TO TOMCAT
                     echo ==========================================
 
                     copy /Y "target\\%APP_NAME%.war" "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war"
@@ -159,12 +233,10 @@ pipeline {
                     echo WAR copied successfully.
 
                     echo ==========================================
-                    echo WAITING FOR APPLICATION
+                    echo WAITING FOR FINAL APPLICATION
                     echo ==========================================
 
-                    echo Waiting for the deployed application to become available...
-
-                    powershell -NoProfile -Command "$deadline=(Get-Date).AddSeconds(90); $url='http://localhost:8081/login'; $success=$false; while ((Get-Date) -lt $deadline) { try { $response=Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5; if ($response.StatusCode -eq 200) { $success=$true; break } } catch { }; Start-Sleep -Seconds 3 }; if (-not $success) { Write-Host 'ERROR: Application did not respond successfully on http://localhost:8081/login within 90 seconds.'; exit 1 }"
+                    powershell -NoProfile -Command "$deadline=(Get-Date).AddSeconds(90); $success=$false; while ((Get-Date) -lt $deadline) { try { $response=Invoke-WebRequest -Uri 'http://localhost:8081/login' -UseBasicParsing -TimeoutSec 5; if ($response.StatusCode -eq 200 -or $response.StatusCode -eq 302) { $success=$true; break } } catch { }; Start-Sleep -Seconds 3 }; if (-not $success) { Write-Host 'ERROR: Final application health check failed.'; exit 1 }"
 
                     if errorlevel 1 (
                         echo ERROR: Application health check failed.
@@ -193,7 +265,6 @@ pipeline {
     post {
 
         success {
-
             echo '=========================================='
             echo 'WEEK 10 PIPELINE SUCCESS'
             echo '=========================================='
@@ -204,6 +275,7 @@ pipeline {
 
             echo 'Checkout: SUCCESS'
             echo 'Build: SUCCESS'
+            echo 'Test Application Startup: SUCCESS'
             echo 'Continuous Testing: SUCCESS'
             echo 'Test Report: PUBLISHED'
             echo 'Package: SUCCESS'
@@ -218,14 +290,13 @@ pipeline {
         }
 
         failure {
-
             echo '=========================================='
             echo 'WEEK 10 PIPELINE FAILED'
             echo '=========================================='
 
             echo 'One or more pipeline stages failed.'
 
-            echo 'If Continuous Testing failed, deployment was automatically stopped.'
+            echo 'If Continuous Testing failed, final deployment was automatically stopped.'
 
             echo 'Check the Jenkins console output and published test report.'
 
@@ -236,10 +307,11 @@ pipeline {
             echo 'Possible failure points:'
             echo '1. Checkout'
             echo '2. Build'
-            echo '3. Continuous Testing'
-            echo '4. Package'
-            echo '5. Deployment'
-            echo '6. Application Health Check'
+            echo '3. Test Application Startup'
+            echo '4. Continuous Testing'
+            echo '5. Package'
+            echo '6. Deployment'
+            echo '7. Application Health Check'
         }
     }
 }
