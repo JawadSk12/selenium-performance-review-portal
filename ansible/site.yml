@@ -1,0 +1,187 @@
+---
+- name: Configure Performance Review Portal target node
+  hosts: performance_review_portal
+  become: true
+  gather_facts: true
+
+  vars:
+    app_name: performance-review-portal
+    app_user: performance
+    app_group: performance
+
+    app_root: /opt/performance-review-portal
+    config_dir: /etc/performance-review-portal
+    logs_dir: /var/log/performance-review-portal
+    deploy_dir: /opt/performance-review-portal/deploy
+
+    app_port: 8082
+    postgres_port: 5432
+
+    required_packages:
+      - openjdk-17-jdk
+      - maven
+      - git
+      - curl
+      - net-tools
+
+  tasks:
+
+    - name: Display target information
+      ansible.builtin.debug:
+        msg:
+          - "Target: {{ inventory_hostname }}"
+          - "OS: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+          - "Application: {{ app_name }}"
+          - "Application port: {{ app_port }}"
+          - "PostgreSQL port: {{ postgres_port }}"
+
+    - name: Update APT package cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install required packages
+      ansible.builtin.apt:
+        name: "{{ required_packages }}"
+        state: present
+
+    - name: Create application group
+      ansible.builtin.group:
+        name: "{{ app_group }}"
+        state: present
+
+    - name: Create application user
+      ansible.builtin.user:
+        name: "{{ app_user }}"
+        group: "{{ app_group }}"
+        shell: /bin/bash
+        create_home: true
+        state: present
+
+    - name: Create application root directory
+      ansible.builtin.file:
+        path: "{{ app_root }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0755"
+
+    - name: Create configuration directory
+      ansible.builtin.file:
+        path: "{{ config_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0755"
+
+    - name: Create logs directory
+      ansible.builtin.file:
+        path: "{{ logs_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0755"
+
+    - name: Create deployment directory
+      ansible.builtin.file:
+        path: "{{ deploy_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0755"
+
+    - name: Create application configuration file
+      ansible.builtin.copy:
+        dest: "{{ config_dir }}/application-config.properties"
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0644"
+        content: |
+          # Performance Review Portal
+          APP_NAME={{ app_name }}
+          APP_PORT={{ app_port }}
+          POSTGRES_PORT={{ postgres_port }}
+          JAVA_VERSION=17
+          LOG_DIRECTORY={{ logs_dir }}
+
+    - name: Check Java installation
+      ansible.builtin.command: java -version
+      register: java_version
+      changed_when: false
+      failed_when: false
+
+    - name: Display Java version
+      ansible.builtin.debug:
+        var: java_version.stderr_lines
+
+    - name: Check Maven installation
+      ansible.builtin.command: mvn -version
+      register: maven_version
+      changed_when: false
+      failed_when: false
+
+    - name: Display Maven version
+      ansible.builtin.debug:
+        var: maven_version.stdout_lines
+
+    - name: Check Git installation
+      ansible.builtin.command: git --version
+      register: git_version
+      changed_when: false
+      failed_when: false
+
+    - name: Display Git version
+      ansible.builtin.debug:
+        var: git_version.stdout
+
+    - name: Check Docker installation
+      ansible.builtin.command: docker --version
+      register: docker_version
+      changed_when: false
+      failed_when: false
+
+    - name: Display Docker version
+      ansible.builtin.debug:
+        var: docker_version.stdout
+
+    - name: Check PostgreSQL port
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: "{{ postgres_port }}"
+        timeout: 5
+      register: postgres_check
+      failed_when: false
+      changed_when: false
+
+    - name: Display PostgreSQL connectivity
+      ansible.builtin.debug:
+        msg: >-
+          PostgreSQL port {{ postgres_port }} is
+          {{ 'reachable' if postgres_check is succeeded else 'not reachable from WSL' }}.
+
+    - name: Check application port
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: "{{ app_port }}"
+        timeout: 5
+      register: app_port_check
+      failed_when: false
+      changed_when: false
+
+    - name: Display application port status
+      ansible.builtin.debug:
+        msg: >-
+          Application port {{ app_port }} is
+          {{ 'currently in use' if app_port_check is succeeded else 'available' }}.
+
+    - name: Configuration summary
+      ansible.builtin.debug:
+        msg:
+          - "Configuration completed for {{ app_name }}"
+          - "User: {{ app_user }}"
+          - "Application root: {{ app_root }}"
+          - "Configuration: {{ config_dir }}"
+          - "Logs: {{ logs_dir }}"
+          - "Deployment: {{ deploy_dir }}"
+          - "Application port: {{ app_port }}"
+          - "PostgreSQL port: {{ postgres_port }}"

@@ -1,0 +1,145 @@
+---
+- name: Week 14 - Automated Provisioning and Reliability Validation
+  hosts: performance_review_portal
+  become: true
+  gather_facts: true
+
+  vars:
+    app_name: performance-review-portal
+    app_user: performance
+    app_group: performance
+
+    app_root: /opt/performance-review-portal
+    config_dir: /etc/performance-review-portal
+    logs_dir: /var/log/performance-review-portal
+    deploy_dir: /opt/performance-review-portal/deploy
+
+    stable_release: "week11"
+    current_release: "week14"
+
+    app_port: 8082
+    postgres_port: 5432
+
+  tasks:
+
+    - name: Display provisioning information
+      ansible.builtin.debug:
+        msg:
+          - "Application: {{ app_name }}"
+          - "Target OS: {{ ansible_facts['distribution'] }} {{ ansible_facts['distribution_version'] }}"
+          - "Stable release: {{ stable_release }}"
+          - "Current release: {{ current_release }}"
+
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - openjdk-17-jdk
+          - maven
+          - git
+          - curl
+          - net-tools
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Ensure application group exists
+      ansible.builtin.group:
+        name: "{{ app_group }}"
+        state: present
+
+    - name: Ensure application user exists
+      ansible.builtin.user:
+        name: "{{ app_user }}"
+        group: "{{ app_group }}"
+        shell: /bin/bash
+        create_home: true
+        state: present
+
+    - name: Ensure application root exists
+      ansible.builtin.file:
+        path: "{{ app_root }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0755"
+
+    - name: Ensure configuration directory exists
+      ansible.builtin.file:
+        path: "{{ config_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0755"
+
+    - name: Ensure logs directory exists
+      ansible.builtin.file:
+        path: "{{ logs_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0755"
+
+    - name: Ensure deployment directory exists
+      ansible.builtin.file:
+        path: "{{ deploy_dir }}"
+        state: directory
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0755"
+
+    - name: Create release manifest
+      ansible.builtin.copy:
+        dest: "{{ deploy_dir }}/release.txt"
+        owner: "{{ app_user }}"
+        group: "{{ app_group }}"
+        mode: "0644"
+        content: |
+          Application={{ app_name }}
+          StableRelease={{ stable_release }}
+          CurrentRelease={{ current_release }}
+          ApplicationPort={{ app_port }}
+          PostgreSQLPort={{ postgres_port }}
+
+    - name: Verify Java 17
+      ansible.builtin.command: java -version
+      register: java_check
+      changed_when: false
+
+    - name: Verify Maven
+      ansible.builtin.command: mvn -version
+      register: maven_check
+      changed_when: false
+
+    - name: Verify PostgreSQL connectivity
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: "{{ postgres_port }}"
+        timeout: 5
+      register: postgres_health
+      changed_when: false
+      failed_when: false
+
+    - name: Verify application port
+      ansible.builtin.wait_for:
+        host: 127.0.0.1
+        port: "{{ app_port }}"
+        timeout: 5
+      register: application_port_health
+      changed_when: false
+      failed_when: false
+
+    - name: Health check summary
+      ansible.builtin.debug:
+        msg:
+          - "Java 17: PASS"
+          - "Maven: PASS"
+          - "PostgreSQL port 5432: {{ 'PASS' if postgres_health is succeeded else 'NOT REACHABLE' }}"
+          - "Application port 8082: {{ 'PASS' if application_port_health is succeeded else 'NOT REACHABLE' }}"
+
+    - name: Provisioning completed
+      ansible.builtin.debug:
+        msg:
+          - "Week 14 automated provisioning completed."
+          - "Application: {{ app_name }}"
+          - "Stable release: {{ stable_release }}"
+          - "Current release: {{ current_release }}"
