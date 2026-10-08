@@ -69,16 +69,16 @@ pipeline {
                     echo CLEANING PREVIOUS APPLICATION
                     echo ==========================================
 
-                    if exist "%TOMCAT_HOME%\\webapps\\%APP_NAME%" (
-                        rmdir /S /Q "%TOMCAT_HOME%\\webapps\\%APP_NAME%"
+                    if exist "%TOMCAT_HOME%\\webapps\\ROOT" (
+                        rmdir /S /Q "%TOMCAT_HOME%\\webapps\\ROOT"
                     )
 
-                    if exist "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war" (
-                        del /Q "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war"
+                    if exist "%TOMCAT_HOME%\\webapps\\ROOT.war" (
+                        del /Q "%TOMCAT_HOME%\\webapps\\ROOT.war"
                     )
 
                     echo ==========================================
-                    echo DEPLOYING WAR FOR TESTING
+                    echo DEPLOYING ROOT WAR FOR TESTING
                     echo ==========================================
 
                     if not exist "target\\%APP_NAME%.war" (
@@ -86,14 +86,14 @@ pipeline {
                         exit /b 1
                     )
 
-                    copy /Y "target\\%APP_NAME%.war" "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war"
+                    copy /Y "target\\%APP_NAME%.war" "%TOMCAT_HOME%\\webapps\\ROOT.war"
 
                     if errorlevel 1 (
                         echo ERROR: Failed to copy WAR.
                         exit /b 1
                     )
 
-                    echo WAR copied successfully.
+                    echo ROOT.war copied successfully.
 
                     echo ==========================================
                     echo STARTING TOMCAT
@@ -206,31 +206,31 @@ pipeline {
                     echo WAR file found successfully.
 
                     echo ==========================================
-                    echo REMOVING PREVIOUS DEPLOYMENT
+                    echo REMOVING PREVIOUS ROOT DEPLOYMENT
                     echo ==========================================
 
-                    if exist "%TOMCAT_HOME%\\webapps\\%APP_NAME%" (
-                        rmdir /S /Q "%TOMCAT_HOME%\\webapps\\%APP_NAME%"
+                    if exist "%TOMCAT_HOME%\\webapps\\ROOT" (
+                        rmdir /S /Q "%TOMCAT_HOME%\\webapps\\ROOT"
                     )
 
-                    if exist "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war" (
-                        del /Q "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war"
+                    if exist "%TOMCAT_HOME%\\webapps\\ROOT.war" (
+                        del /Q "%TOMCAT_HOME%\\webapps\\ROOT.war"
                     )
 
-                    echo Previous deployment removed.
+                    echo Previous ROOT deployment removed.
 
                     echo ==========================================
-                    echo COPYING FINAL WAR TO TOMCAT
+                    echo COPYING FINAL ROOT WAR TO TOMCAT
                     echo ==========================================
 
-                    copy /Y "target\\%APP_NAME%.war" "%TOMCAT_HOME%\\webapps\\%APP_NAME%.war"
+                    copy /Y "target\\%APP_NAME%.war" "%TOMCAT_HOME%\\webapps\\ROOT.war"
 
                     if errorlevel 1 (
-                        echo ERROR: Failed to copy WAR to Tomcat.
+                        echo ERROR: Failed to copy ROOT.war to Tomcat.
                         exit /b 1
                     )
 
-                    echo WAR copied successfully.
+                    echo ROOT.war copied successfully.
 
                     echo ==========================================
                     echo WAITING FOR FINAL APPLICATION
@@ -256,7 +256,7 @@ pipeline {
 
                     echo Application: %APP_NAME%
                     echo Environment: %DEPLOY_ENV%
-                    echo URL: http://localhost:8081/%APP_NAME%/
+                    echo URL: http://localhost:8081/login
                 '''
             }
         }
@@ -282,7 +282,7 @@ pipeline {
             echo 'Deploy: SUCCESS'
             echo 'Application Health Check: SUCCESS'
 
-            echo 'Application URL: http://localhost:8081/performance-review-portal/'
+            echo 'Application URL: http://localhost:8081/login'
 
             echo '=========================================='
             echo 'WEEK 10 CONTINUOUS TESTING COMPLETED'
@@ -295,7 +295,6 @@ pipeline {
             echo '=========================================='
 
             echo 'One or more pipeline stages failed.'
-
             echo 'If Continuous Testing failed, final deployment was automatically stopped.'
 
             echo 'Check the Jenkins console output and published test report.'
@@ -305,6 +304,7 @@ pipeline {
             echo '=========================================='
 
             echo 'Possible failure points:'
+
             echo '1. Checkout'
             echo '2. Build'
             echo '3. Test Application Startup'
