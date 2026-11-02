@@ -25,6 +25,7 @@ public class PerformanceReviewPortalApplication extends SpringBootServletInitial
     }
 
     public static void main(String[] args) {
+        // Verified CI/CD deployment pipeline active
         SpringApplication.run(PerformanceReviewPortalApplication.class, args);
     }
 }

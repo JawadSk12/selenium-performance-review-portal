@@ -1,6 +1,7 @@
 # 🏢 Performance Review Portal
 
 > A full-stack **Spring Boot** enterprise application for managing employee performance reviews — built, tested, packaged, containerised, and deployed through a complete **DevOps pipeline** using Jenkins CI/CD, Docker, Docker Compose, and Ansible automation.
+<!-- Verified DevOps CI/CD Pipeline - Release v1.0.1 -->
 
 ---
 
