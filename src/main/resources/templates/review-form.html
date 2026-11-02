@@ -4,30 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submit Self Review - Performance Review Portal</title>
+    <!-- Google Fonts Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Custom Review Stylesheet -->
+    <!-- Custom Review Stylesheets -->
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css">
     <link rel="stylesheet" th:href="@{/css/review.css}" href="/css/review.css">
 </head>
 <body>
 
 <div class="review-container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <!-- Page Header & Breadcrumb -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
         <div>
-            <a th:href="@{/dashboard}" class="text-decoration-none text-muted small d-inline-flex align-items-center mb-2">
-                <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+            <a th:href="@{/dashboard}" class="btn btn-sm btn-light border mb-2 d-inline-flex align-items-center gap-1 text-muted">
+                <i class="bi bi-arrow-left"></i>
+                <span>Back to Dashboard</span>
             </a>
             <h1 class="h3 fw-bold mb-1">Employee Self-Review Form</h1>
             <p class="text-muted small mb-0">Evaluate your performance across core competencies for the current appraisal cycle.</p>
         </div>
-        <div class="badge bg-light text-dark border p-2 text-end d-none d-sm-block">
-            <span class="d-block small text-muted">Employee</span>
-            <span class="fw-bold" th:text="${employee.name}">Jawad Shaikh</span>
+        <div class="card border px-3 py-2 bg-white shadow-sm d-none d-sm-flex flex-row align-items-center gap-3 rounded-3">
+            <div class="stat-icon stat-icon-indigo" style="width: 36px; height: 36px; font-size: 1rem;">
+                <i class="bi bi-person-fill"></i>
+            </div>
+            <div>
+                <span class="d-block small text-muted" style="font-size: 0.72rem;">Review Contributor</span>
+                <span class="fw-bold text-dark small" th:text="${employee.name}">Jawad Shaikh</span>
+            </div>
         </div>
     </div>
 
+    <!-- Review Form Card -->
     <div class="review-form-card">
         <form th:action="@{/review}" method="post" th:object="${review}" id="selfReviewForm">
 
@@ -41,12 +54,13 @@
             <div class="slider-group">
                 <div class="slider-header">
                     <label for="technical" class="slider-label">
-                        <i class="bi bi-code-slash text-primary me-1"></i> Technical Proficiency
+                        <i class="bi bi-code-slash text-primary"></i>
+                        <span>Technical Proficiency &amp; Code Quality</span>
                     </label>
                     <span id="techVal" class="score-badge">9/10</span>
                 </div>
                 <input type="range" class="form-range" min="1" max="10" step="1" id="technical" name="technical"
-                       th:field="*{technical}" oninput="updateScore('techVal', this.value)">
+                       th:field="*{technical}" oninput="updateScore('techVal', this.value); calculateSelfAverage();">
                 <div class="d-flex justify-content-between text-muted small mt-1" style="font-size: 0.75rem;">
                     <span>1 (Beginner)</span>
                     <span>5 (Competent)</span>
@@ -58,14 +72,15 @@
             <div class="slider-group">
                 <div class="slider-header">
                     <label for="communication" class="slider-label">
-                        <i class="bi bi-chat-dots text-primary me-1"></i> Communication & Collaboration
+                        <i class="bi bi-chat-dots text-primary"></i>
+                        <span>Communication &amp; Cross-Team Alignment</span>
                     </label>
                     <span id="commVal" class="score-badge">8/10</span>
                 </div>
                 <input type="range" class="form-range" min="1" max="10" step="1" id="communication" name="communication"
-                       th:field="*{communication}" oninput="updateScore('commVal', this.value)">
+                       th:field="*{communication}" oninput="updateScore('commVal', this.value); calculateSelfAverage();">
                 <div class="d-flex justify-content-between text-muted small mt-1" style="font-size: 0.75rem;">
-                    <span>1 (Needs Work)</span>
+                    <span>1 (Developing)</span>
                     <span>5 (Effective)</span>
                     <span>10 (Inspiring / Articulate)</span>
                 </div>
@@ -75,16 +90,17 @@
             <div class="slider-group">
                 <div class="slider-header">
                     <label for="teamwork" class="slider-label">
-                        <i class="bi bi-people text-primary me-1"></i> Teamwork & Cross-Functional Alignment
+                        <i class="bi bi-people text-primary"></i>
+                        <span>Teamwork, Ownership &amp; Mentorship</span>
                     </label>
                     <span id="teamVal" class="score-badge">9/10</span>
                 </div>
                 <input type="range" class="form-range" min="1" max="10" step="1" id="teamwork" name="teamwork"
-                       th:field="*{teamwork}" oninput="updateScore('teamVal', this.value)">
+                       th:field="*{teamwork}" oninput="updateScore('teamVal', this.value); calculateSelfAverage();">
                 <div class="d-flex justify-content-between text-muted small mt-1" style="font-size: 0.75rem;">
                     <span>1 (Individualist)</span>
                     <span>5 (Reliable Partner)</span>
-                    <span>10 (Team Pillar / Mentor)</span>
+                    <span>10 (Team Pillar / Champion)</span>
                 </div>
             </div>
 
@@ -92,64 +108,81 @@
             <div class="slider-group mb-4">
                 <div class="slider-header">
                     <label for="problemSolving" class="slider-label">
-                        <i class="bi bi-lightbulb text-primary me-1"></i> Problem Solving & Critical Thinking
+                        <i class="bi bi-lightbulb text-primary"></i>
+                        <span>Problem Solving &amp; Architectural Initiative</span>
                     </label>
                     <span id="probVal" class="score-badge">8/10</span>
                 </div>
                 <input type="range" class="form-range" min="1" max="10" step="1" id="problemSolving" name="problemSolving"
-                       th:field="*{problemSolving}" oninput="updateScore('probVal', this.value)">
+                       th:field="*{problemSolving}" oninput="updateScore('probVal', this.value); calculateSelfAverage();">
                 <div class="d-flex justify-content-between text-muted small mt-1" style="font-size: 0.75rem;">
-                    <span>1 (Requires Guidance)</span>
+                    <span>1 (Needs Guidance)</span>
                     <span>5 (Analytical)</span>
                     <span>10 (Innovative Solutionist)</span>
+                </div>
+            </div>
+
+            <!-- Live Calculated Score Preview Bar -->
+            <div class="live-score-preview">
+                <div>
+                    <span class="small fw-bold text-uppercase text-primary d-block" style="letter-spacing: 0.05em;">Estimated Average Self-Rating</span>
+                    <span class="text-muted small">Equal weighting: (Tech + Comm + Team + Problem) ÷ 4</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="h3 fw-bold text-primary mb-0" id="liveAverageDisplay">8.50</span>
+                    <span class="text-muted fw-semibold">/10</span>
                 </div>
             </div>
 
             <!-- Section 2: Qualitative Self-Appraisal -->
             <div class="section-title mt-4">
                 <i class="bi bi-journal-text text-primary"></i>
-                <span>2. Achievements & Growth Goals</span>
+                <span>2. Key Achievements &amp; Growth Goals</span>
             </div>
 
             <!-- Achievements -->
             <div class="mb-4">
                 <label for="achievement" class="form-label fw-semibold small text-secondary">
-                    Key Achievements & Contributions <span class="text-danger">*</span>
+                    Key Achievements &amp; Contributions <span class="text-danger">*</span>
                 </label>
                 <textarea id="achievement" name="achievement" th:field="*{achievement}" rows="4"
                           class="form-control form-control-textarea"
                           placeholder="Summarize key projects, milestones achieved, challenges overcome, and business impact delivered during this review period..."
                           required></textarea>
-                <div class="form-text text-muted small">Highlight measurable results, optimizations, or initiatives you led.</div>
+                <div class="form-text text-muted small">Detail quantitative deliverables, optimizations, or process improvements you spearheaded.</div>
             </div>
 
             <!-- Future Goals -->
             <div class="mb-4">
                 <label for="futureGoal" class="form-label fw-semibold small text-secondary">
-                    Future Goals & Professional Development <span class="text-danger">*</span>
+                    Future Goals &amp; Professional Development <span class="text-danger">*</span>
                 </label>
                 <textarea id="futureGoal" name="futureGoal" th:field="*{futureGoal}" rows="4"
                           class="form-control form-control-textarea"
                           placeholder="Outline specific technical targets, new competencies you plan to acquire, certifications, and expected impact for the next cycle..."
                           required></textarea>
-                <div class="form-text text-muted small">Detail what you aim to achieve and skills you wish to enhance.</div>
+                <div class="form-text text-muted small">Detail strategic goals and competencies you wish to develop in the upcoming evaluation period.</div>
             </div>
 
-            <!-- Notice Banner -->
-            <div class="alert alert-light border small text-muted d-flex align-items-center mb-4">
-                <i class="bi bi-info-circle-fill text-primary fs-5 me-2"></i>
+            <!-- Workflow Notice Box -->
+            <div class="alert alert-light border small text-muted d-flex align-items-center mb-4 rounded-3">
+                <i class="bi bi-info-circle-fill text-primary fs-5 me-3 flex-shrink-0"></i>
                 <div>
-                    Upon submission, your review status will automatically become <strong class="text-dark">PENDING</strong> with review date set to <strong class="text-dark">today</strong>, and forwarded to your manager for evaluation.
+                    Upon submission, your self-review status will automatically transition to <strong class="text-dark">PENDING</strong> with review date stamped as <strong class="text-dark">today</strong>, and forwarded to your manager's appraisal queue.
                 </div>
             </div>
 
-            <!-- Submit Buttons -->
-            <div class="d-flex justify-content-end gap-2 pt-2 border-top">
-                <a th:href="@{/dashboard}" class="btn btn-outline-secondary px-4">Cancel</a>
-                <button type="submit" id="submitReviewBtn" class="btn btn-action-primary px-4">
-                    <i class="bi bi-send-fill me-1"></i> Submit Review
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-end align-items-center gap-3 pt-3 border-top">
+                <a th:href="@{/dashboard}" class="btn btn-outline-secondary px-4 py-2 rounded-3">
+                    Cancel
+                </a>
+                <button type="submit" id="submitReviewBtn" class="btn btn-primary-gradient px-4 py-2 rounded-3 d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-send-fill"></i>
+                    <span>Submit Review</span>
                 </button>
             </div>
+
         </form>
     </div>
 </div>
@@ -158,24 +191,28 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    function updateScore(badgeId, value) {
-        document.getElementById(badgeId).innerText = value + '/10';
+    function updateScore(elementId, value) {
+        document.getElementById(elementId).innerText = value + "/10";
+    }
+
+    function calculateSelfAverage() {
+        const t = parseInt(document.getElementById('technical').value) || 0;
+        const c = parseInt(document.getElementById('communication').value) || 0;
+        const tw = parseInt(document.getElementById('teamwork').value) || 0;
+        const p = parseInt(document.getElementById('problemSolving').value) || 0;
+        const avg = ((t + c + tw + p) / 4).toFixed(2);
+        document.getElementById('liveAverageDisplay').innerText = avg;
     }
 
     // Sync on page load
-    document.addEventListener('DOMContentLoaded', function () {
-        const tech = document.getElementById('technical');
-        if (tech) updateScore('techVal', tech.value);
-
-        const comm = document.getElementById('communication');
-        if (comm) updateScore('commVal', comm.value);
-
-        const team = document.getElementById('teamwork');
-        if (team) updateScore('teamVal', team.value);
-
-        const prob = document.getElementById('problemSolving');
-        if (prob) updateScore('probVal', prob.value);
+    document.addEventListener('DOMContentLoaded', function() {
+        updateScore('techVal', document.getElementById('technical').value);
+        updateScore('commVal', document.getElementById('communication').value);
+        updateScore('teamVal', document.getElementById('teamwork').value);
+        updateScore('probVal', document.getElementById('problemSolving').value);
+        calculateSelfAverage();
     });
 </script>
+
 </body>
 </html>
