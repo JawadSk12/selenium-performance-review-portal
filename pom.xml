@@ -25,6 +25,8 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Configurable Selenium base URL passed to BaseTest via system property -->
+        <selenium.base.url>http://localhost:8081</selenium.base.url>
     </properties>
 
     <dependencies>
@@ -87,7 +89,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Selenium WebDriver for Week 9 UI Testing -->
+        <!-- Selenium WebDriver for UI Testing -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
@@ -104,7 +106,7 @@
 
         <plugins>
 
-            <!-- Spring Boot Maven Plugin -->
+            <!-- Spring Boot Maven Plugin for WAR Packaging -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -133,6 +135,34 @@
                             <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+            <!-- ===========================================================
+                 Maven Surefire Plugin
+                 Executes the complete test suite (23 tests):
+                   • 18 Spring Boot MockMvc Unit & Integration Workflow tests
+                   • 5 Selenium WebDriver Browser Automation tests
+                 BaseTest manages application lifecycle automatically:
+                   • Reuses running Tomcat instance on port 8081 if available
+                   • Boots in-process Spring Boot server on 8081 if not running
+                   • Verifies PostgreSQL connectivity before starting
+                 All XML test reports are generated under target/surefire-reports
+                 for Jenkins JUnit publishing.
+                 =========================================================== -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                    <systemPropertyVariables>
+                        <selenium.base.url>${selenium.base.url}</selenium.base.url>
+                    </systemPropertyVariables>
+                    <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
                 </configuration>
             </plugin>
 

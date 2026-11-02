@@ -217,6 +217,8 @@ public class DashboardTest extends BaseTest {
             );
 
         } catch (AssertionError | RuntimeException e) {
+            System.err.println("[DashboardTest FAILURE]: " + e.getMessage());
+            e.printStackTrace();
 
             // Automatically capture screenshot whenever
             // the Selenium test fails.

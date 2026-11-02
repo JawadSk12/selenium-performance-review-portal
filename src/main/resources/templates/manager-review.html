@@ -4,22 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Review Evaluation - Performance Review Management</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Evaluation Stylesheet -->
+    <!-- Global & Evaluation Stylesheets -->
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/style.css">
     <link rel="stylesheet" th:href="@{/css/manager-review.css}" href="/css/manager-review.css">
 </head>
 <body>
 
-<!-- Header -->
-<header class="eval-header">
+<!-- ── Evaluation Sticky Header ─────────────────────────────────────────── -->
+<header class="eval-header" role="banner">
     <div class="eval-header-brand">
-        <div class="eval-header-icon">
+        <div class="eval-header-icon" aria-hidden="true">
             <i class="bi bi-clipboard2-check"></i>
         </div>
         <div>
@@ -33,17 +35,19 @@
             <span class="text-muted" style="font-size: 0.72rem;" id="managerEmailDisplay" th:text="${managerEmail}">manager@gmail.com</span>
         </div>
         <a th:href="@{/manager/dashboard}" class="btn-back">
-            <i class="bi bi-arrow-left"></i> Dashboard
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Dashboard
         </a>
     </div>
 </header>
 
-<!-- Main Content -->
+<!-- ── Main Content Container ──────────────────────────────────────────── -->
 <div class="eval-container">
 
     <!-- Page Title Row -->
     <div class="d-flex align-items-center gap-2 mb-4">
-        <i class="bi bi-person-check-fill fs-4 text-primary"></i>
+        <div class="stat-icon stat-icon-indigo" style="width: 40px; height: 40px;" aria-hidden="true">
+            <i class="bi bi-person-check-fill"></i>
+        </div>
         <div>
             <h2 class="h5 fw-bold mb-0 text-dark">Evaluating:
                 <span class="text-primary" th:text="${review.employee != null ? review.employee.name : 'Employee'}">Employee Name</span>
@@ -59,9 +63,9 @@
     <!-- ─────────────────────────────────────────────────────────────────────
          PANEL 1: Employee Self-Review (Read-Only)
          ───────────────────────────────────────────────────────────────────── -->
-    <div class="self-review-card">
+    <div class="self-review-card shadow-sm">
         <div class="card-section-title">
-            <i class="bi bi-person-lines-fill text-primary"></i>
+            <i class="bi bi-person-lines-fill text-primary" aria-hidden="true"></i>
             Employee Self-Assessment (Read-Only)
         </div>
 
@@ -69,23 +73,23 @@
         <div class="d-flex flex-wrap align-items-center gap-2 mb-4">
             <div class="employee-name-badge" th:text="${review.employee != null ? review.employee.name : 'Unknown'}">Employee Name</div>
             <span class="meta-pill">
-                <i class="bi bi-building"></i>
+                <i class="bi bi-building" aria-hidden="true"></i>
                 <span th:text="${review.employee != null ? review.employee.department : '—'}">IT</span>
             </span>
             <span class="meta-pill">
-                <i class="bi bi-calendar3"></i>
+                <i class="bi bi-calendar3" aria-hidden="true"></i>
                 <span th:text="${review.reviewDate != null ? #temporals.format(review.reviewDate, 'dd MMM yyyy') : '—'}">Date</span>
             </span>
             <span class="meta-pill">
-                <i class="bi bi-envelope"></i>
+                <i class="bi bi-envelope" aria-hidden="true"></i>
                 <span th:text="${review.employee != null ? review.employee.email : '—'}">email</span>
             </span>
         </div>
 
         <!-- Self-Assessed Competency Scores -->
-        <h6 class="fw-bold small text-muted text-uppercase mb-3" style="letter-spacing: 0.05em;">
-            <i class="bi bi-bar-chart-line me-1"></i> Self-Assessed Scores
-        </h6>
+        <h3 class="fw-bold small text-muted text-uppercase mb-3" style="letter-spacing: 0.05em; font-size: 0.78rem;">
+            <i class="bi bi-bar-chart-line me-1" aria-hidden="true"></i> Self-Assessed Scores
+        </h3>
         <div class="score-grid mb-4">
             <div class="score-chip">
                 <span class="score-chip-label">Technical</span>
@@ -109,19 +113,19 @@
             </div>
         </div>
 
-        <!-- Achievements -->
+        <!-- Achievements & Contributions -->
         <div class="mb-3" th:if="${review.achievement != null}">
-            <h6 class="fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.05em;">
-                <i class="bi bi-trophy me-1 text-warning"></i> Achievements &amp; Contributions
-            </h6>
+            <h4 class="fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.05em; font-size: 0.78rem;">
+                <i class="bi bi-trophy me-1 text-warning" aria-hidden="true"></i> Achievements &amp; Contributions
+            </h4>
             <div class="review-text-block" th:text="${review.achievement}">Achievements text.</div>
         </div>
 
-        <!-- Future Goals -->
+        <!-- Future Goals & Targets -->
         <div th:if="${review.futureGoal != null}">
-            <h6 class="fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.05em;">
-                <i class="bi bi-compass me-1 text-info"></i> Future Goals &amp; Targets
-            </h6>
+            <h4 class="fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.05em; font-size: 0.78rem;">
+                <i class="bi bi-compass me-1 text-info" aria-hidden="true"></i> Future Goals &amp; Targets
+            </h4>
             <div class="review-text-block" th:text="${review.futureGoal}">Goals text.</div>
         </div>
     </div>
@@ -129,11 +133,11 @@
     <!-- ─────────────────────────────────────────────────────────────────────
          PANEL 2: Manager Evaluation Form
          ───────────────────────────────────────────────────────────────────── -->
-    <div class="eval-form-card">
-        <h5 class="fw-bold mb-4" style="font-size: 1rem;">
-            <i class="bi bi-pencil-square text-primary me-2"></i>
+    <div class="eval-form-card shadow-sm">
+        <h3 class="fw-bold mb-4" style="font-size: 1.05rem;">
+            <i class="bi bi-pencil-square text-primary me-2" aria-hidden="true"></i>
             Manager Evaluation
-        </h5>
+        </h3>
 
         <form th:action="@{'/manager/review/' + ${review.id} + '/evaluate'}"
               method="post"
@@ -143,7 +147,7 @@
 
             <!-- Technical Score -->
             <div class="mb-4">
-                <label class="form-label" for="technicalRange">Technical
+                <label class="form-label" for="technicalRange">Technical Proficiency
                     <span class="text-muted fw-normal small">(1 = Beginner, 10 = Expert)</span>
                 </label>
                 <div class="score-range-group">
@@ -158,7 +162,7 @@
 
             <!-- Communication Score -->
             <div class="mb-4">
-                <label class="form-label" for="communicationRange">Communication
+                <label class="form-label" for="communicationRange">Communication &amp; Collaboration
                     <span class="text-muted fw-normal small">(1 = Poor, 10 = Excellent)</span>
                 </label>
                 <div class="score-range-group">
@@ -173,7 +177,7 @@
 
             <!-- Teamwork Score -->
             <div class="mb-4">
-                <label class="form-label" for="teamworkRange">Teamwork
+                <label class="form-label" for="teamworkRange">Teamwork &amp; Cross-Functional Alignment
                     <span class="text-muted fw-normal small">(1 = Individual, 10 = Team Player)</span>
                 </label>
                 <div class="score-range-group">
@@ -188,7 +192,7 @@
 
             <!-- Problem Solving Score -->
             <div class="mb-4">
-                <label class="form-label" for="problemSolvingRange">Problem Solving
+                <label class="form-label" for="problemSolvingRange">Problem Solving &amp; Initiative
                     <span class="text-muted fw-normal small">(1 = Basic, 10 = Advanced)</span>
                 </label>
                 <div class="score-range-group">
@@ -204,10 +208,10 @@
             <!-- Manager Comment -->
             <div class="mb-4">
                 <label class="form-label" for="managerComment">
-                    <i class="bi bi-chat-left-text me-1"></i> Manager Comment
+                    <i class="bi bi-chat-left-text me-1" aria-hidden="true"></i> Manager Feedback &amp; Recommendations
                 </label>
                 <textarea id="managerComment" name="managerComment" class="form-control"
-                          rows="4" placeholder="Provide detailed feedback, observations, and recommendations for this employee..."
+                          rows="4" placeholder="Provide detailed feedback, observations, performance highlights, and recommendations for this employee..."
                           th:text="${evaluationDTO.managerComment}"></textarea>
             </div>
         </form>
@@ -216,7 +220,7 @@
     <!-- ─────────────────────────────────────────────────────────────────────
          PANEL 3: Calculated Overall Score & Grade (Live Preview)
          ───────────────────────────────────────────────────────────────────── -->
-    <div class="result-bar">
+    <div class="result-bar shadow-sm">
         <div>
             <div class="result-bar-label">Calculated Overall Score</div>
             <div class="result-bar-score" id="overallScoreDisplay">5.00</div>
@@ -225,7 +229,7 @@
         <div class="text-end">
             <div class="result-bar-label mb-1">Performance Grade</div>
             <div class="grade-badge grade-needs" id="gradeBadge">
-                <i class="bi bi-award-fill"></i>
+                <i class="bi bi-award-fill" aria-hidden="true"></i>
                 <span id="gradeLabel">Needs Improvement</span>
             </div>
         </div>
@@ -236,20 +240,20 @@
          ───────────────────────────────────────────────────────────────────── -->
     <div class="d-flex flex-wrap gap-3 justify-content-between align-items-center pb-5">
         <a th:href="@{/manager/dashboard}" class="btn-back">
-            <i class="bi bi-arrow-left"></i> Back to Dashboard
+            <i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Dashboard
         </a>
         <div class="d-flex gap-3">
             <!-- Reject Button -->
             <button type="button" class="btn-reject"
-                    onclick="submitEvaluation('reject')"
+                    onclick="handleEvaluationAction('reject')"
                     id="rejectBtn">
-                <i class="bi bi-x-circle-fill me-1"></i> Reject
+                <i class="bi bi-x-circle-fill me-1" aria-hidden="true"></i> Reject
             </button>
             <!-- Approve Button -->
             <button type="button" class="btn-approve"
-                    onclick="submitEvaluation('approve')"
+                    onclick="handleEvaluationAction('approve')"
                     id="approveBtn">
-                <i class="bi bi-check-circle-fill me-1"></i> Approve
+                <i class="bi bi-check-circle-fill me-1" aria-hidden="true"></i> Approve
             </button>
         </div>
     </div>
@@ -258,6 +262,7 @@
 
 <!-- Bootstrap 5 JS Bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/main.js}" src="/js/main.js"></script>
 
 <script>
     // ──────────────────────────────────────────────────────────────────────
@@ -265,7 +270,8 @@
     // ──────────────────────────────────────────────────────────────────────
     function syncScore(rangeId, displayId) {
         const val = document.getElementById(rangeId).value;
-        document.getElementById(displayId).textContent = val;
+        const display = document.getElementById(displayId);
+        if (display) display.textContent = val;
     }
 
     // ──────────────────────────────────────────────────────────────────────
@@ -273,15 +279,21 @@
     // (Technical + Communication + Teamwork + ProblemSolving) / 4
     // ──────────────────────────────────────────────────────────────────────
     function recalcOverall() {
-        const t  = parseInt(document.getElementById('technicalRange').value)     || 0;
-        const c  = parseInt(document.getElementById('communicationRange').value)  || 0;
-        const tw = parseInt(document.getElementById('teamworkRange').value)       || 0;
-        const ps = parseInt(document.getElementById('problemSolvingRange').value) || 0;
+        const tEl  = document.getElementById('technicalRange');
+        const cEl  = document.getElementById('communicationRange');
+        const twEl = document.getElementById('teamworkRange');
+        const psEl = document.getElementById('problemSolvingRange');
+
+        const t  = tEl ? (parseInt(tEl.value) || 0) : 0;
+        const c  = cEl ? (parseInt(cEl.value) || 0) : 0;
+        const tw = twEl ? (parseInt(twEl.value) || 0) : 0;
+        const ps = psEl ? (parseInt(psEl.value) || 0) : 0;
 
         const overall = (t + c + tw + ps) / 4;
         const rounded = Math.round(overall * 100) / 100;
 
-        document.getElementById('overallScoreDisplay').textContent = rounded.toFixed(2);
+        const scoreDisplay = document.getElementById('overallScoreDisplay');
+        if (scoreDisplay) scoreDisplay.textContent = rounded.toFixed(2);
         updateGradeBadge(rounded);
     }
 
@@ -291,6 +303,7 @@
     function updateGradeBadge(score) {
         const badge = document.getElementById('gradeBadge');
         const label = document.getElementById('gradeLabel');
+        if (!badge || !label) return;
 
         badge.className = 'grade-badge ';
         let grade = '';
@@ -312,10 +325,24 @@
     }
 
     // ──────────────────────────────────────────────────────────────────────
+    // Action handler with accessible confirmation
+    // ──────────────────────────────────────────────────────────────────────
+    function handleEvaluationAction(action) {
+        if (typeof window.showConfirmDialog === 'function') {
+            window.showConfirmDialog(action, function () {
+                submitEvaluation(action);
+            });
+        } else {
+            submitEvaluation(action);
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────────────
     // Submit: set action hidden field and submit the form
     // ──────────────────────────────────────────────────────────────────────
     function submitEvaluation(action) {
         const form = document.getElementById('evalForm');
+        if (!form) return;
 
         // Remove any existing action input
         const existing = form.querySelector('input[name="action"]');

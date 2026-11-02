@@ -1,23 +1,291 @@
-/*
- * Performance Review Portal - Global Stylesheet
- * Ready for Phase 2 UI Integration (Bootstrap 5 Enhanced)
- */
+/* ==========================================================================
+   PERFORMANCE REVIEW PORTAL — UNIFIED DESIGN SYSTEM & GLOBAL TOKENS
+   Premium Enterprise HR SaaS | Inter + Plus Jakarta Sans | v2.0
+   Palette: Deep Navy #101828 | Indigo #4F46E5 | Violet #7C3AED
+   ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* --------------------------------------------------------------------------
+   1. Design Tokens
+   -------------------------------------------------------------------------- */
 :root {
-    --primary-color: #2563eb;
-    --secondary-color: #475569;
-    --success-color: #16a34a;
-    --warning-color: #d97706;
-    --danger-color: #dc2626;
-    --background-color: #f8fafc;
-    --card-background: #ffffff;
-    --text-primary: #1e293b;
-    --text-muted: #64748b;
+    /* Brand & Accent */
+    --clr-navy:           #101828;
+    --clr-indigo:         #4F46E5;
+    --clr-indigo-hover:   #4338CA;
+    --clr-indigo-light:   #EEF2FF;
+    --clr-indigo-border:  #C7D2FE;
+    --clr-violet:         #7C3AED;
+    --clr-gradient:       linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #7C3AED 100%);
+    --clr-gradient-soft:  linear-gradient(135deg, rgba(79,70,229,.06) 0%, rgba(124,58,237,.04) 100%);
+
+    /* Semantic */
+    --clr-success:        #15803D;
+    --clr-success-bg:     #DCFCE7;
+    --clr-success-border: #BBF7D0;
+    --clr-warning:        #B45309;
+    --clr-warning-bg:     #FEF3C7;
+    --clr-warning-border: #FDE68A;
+    --clr-danger:         #B42318;
+    --clr-danger-bg:      #FEE2E2;
+    --clr-danger-border:  #FECACA;
+    --clr-info:           #175CD3;
+    --clr-info-bg:        #EFF8FF;
+    --clr-info-border:    #B2DDFF;
+
+    /* Surfaces */
+    --bg-page:            #F5F7FB;
+    --bg-surface:         #FFFFFF;
+    --bg-subtle:          #F9FAFB;
+
+    /* Text */
+    --txt-primary:        #172033;
+    --txt-secondary:      #667085;
+    --txt-muted:          #98A2B3;
+
+    /* Borders */
+    --border-light:       #F2F4F7;
+    --border-color:       #E4E7EC;
+    --border-strong:      #D0D5DD;
+
+    /* Radius */
+    --radius-xs:   0.375rem;
+    --radius-sm:   0.5rem;
+    --radius-md:   0.75rem;
+    --radius-lg:   1rem;
+    --radius-xl:   1.25rem;
+    --radius-2xl:  1.5rem;
+    --radius-pill: 9999px;
+
+    /* Shadows */
+    --shadow-xs:  0 1px 2px rgba(16,24,40,.05);
+    --shadow-sm:  0 1px 3px rgba(16,24,40,.1), 0 1px 2px rgba(16,24,40,.06);
+    --shadow-md:  0 4px 8px -2px rgba(16,24,40,.1), 0 2px 4px -2px rgba(16,24,40,.06);
+    --shadow-lg:  0 12px 16px -4px rgba(16,24,40,.08), 0 4px 6px -2px rgba(16,24,40,.03);
+    --shadow-xl:  0 20px 24px -4px rgba(16,24,40,.08), 0 8px 8px -4px rgba(16,24,40,.03);
+    --shadow-glow: 0 8px 24px -4px rgba(79,70,229,.32);
+
+    /* Transitions */
+    --ease:               cubic-bezier(.16,1,.3,1);
+    --t-fast:             .15s var(--ease);
+    --t-normal:           .25s var(--ease);
+    --t-slow:             .4s  var(--ease);
 }
 
+/* --------------------------------------------------------------------------
+   2. Reset & Base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
 body {
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-primary);
+    font-family: 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--txt-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
+    margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    font-weight: 700;
+    color: var(--txt-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 0;
+}
+
+.page-title   { font-size: 1.5rem;  font-weight: 700; letter-spacing: -0.02em; }
+.section-head { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.01em; }
+.card-head    { font-size: 0.9375rem; font-weight: 700; }
+.label-sm     { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--txt-secondary); }
+.caption      { font-size: 0.8125rem; color: var(--txt-secondary); }
+
+/* --------------------------------------------------------------------------
+   4. Focus & Accessibility
+   -------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+    outline: 2px solid var(--clr-indigo);
+    outline-offset: 2px;
+    border-radius: var(--radius-xs);
+}
+
+/* --------------------------------------------------------------------------
+   5. Scrollbar
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar            { width: 6px; height: 6px; }
+::-webkit-scrollbar-track      { background: var(--bg-page); }
+::-webkit-scrollbar-thumb      { background: var(--border-strong); border-radius: var(--radius-pill); }
+::-webkit-scrollbar-thumb:hover { background: var(--txt-muted); }
+
+/* --------------------------------------------------------------------------
+   6. Status Dots
+   -------------------------------------------------------------------------- */
+.status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+.status-dot-emerald { background: #10B981; box-shadow: 0 0 0 3px rgba(16,185,129,.18); }
+.status-dot-amber   { background: #F59E0B; box-shadow: 0 0 0 3px rgba(245,158,11,.18); animation: pulse-amber 2s ease-in-out infinite; }
+.status-dot-rose    { background: #F43F5E; box-shadow: 0 0 0 3px rgba(244,63,94,.18); }
+.status-dot-slate   { background: var(--txt-muted); }
+
+@keyframes pulse-amber {
+    0%,100% { transform: scale(.95); box-shadow: 0 0 0 0 rgba(245,158,11,.4); }
+    50%      { transform: scale(1.05); box-shadow: 0 0 0 5px rgba(245,158,11,0); }
+}
+
+/* --------------------------------------------------------------------------
+   7. Status Badges
+   -------------------------------------------------------------------------- */
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .3em .85em;
+    border-radius: var(--radius-pill);
+    font-size: .8125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -.01em;
+    white-space: nowrap;
+}
+.badge-status-pending  { background: var(--clr-warning-bg);  color: var(--clr-warning);  border: 1px solid var(--clr-warning-border); }
+.badge-status-completed { background: var(--clr-success-bg); color: var(--clr-success);  border: 1px solid var(--clr-success-border); }
+.badge-status-rejected  { background: var(--clr-danger-bg);  color: var(--clr-danger);   border: 1px solid var(--clr-danger-border); }
+.badge-status-none      { background: var(--bg-subtle);       color: var(--txt-secondary); border: 1px solid var(--border-color); }
+
+/* --------------------------------------------------------------------------
+   8. Stat Icon Variants
+   -------------------------------------------------------------------------- */
+.stat-icon {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+.stat-icon-amber   { background: #FFFBEB; color: #D97706; }
+.stat-icon-emerald { background: #ECFDF5; color: #059669; }
+.stat-icon-slate   { background: var(--bg-subtle); color: var(--txt-secondary); }
+.stat-icon-indigo  { background: var(--clr-indigo-light); color: var(--clr-indigo); }
+.stat-icon-rose    { background: #FFF1F2; color: #E11D48; }
+.stat-icon-sky     { background: #F0F9FF; color: #0284C7; }
+
+/* --------------------------------------------------------------------------
+   9. Shared Button System
+   -------------------------------------------------------------------------- */
+.btn-primary-gradient {
+    background: var(--clr-gradient);
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: .9375rem;
+    padding: .75rem 1.5rem;
+    border-radius: var(--radius-md);
+    transition: opacity var(--t-normal), transform var(--t-normal), box-shadow var(--t-normal);
+    box-shadow: var(--shadow-glow);
+    letter-spacing: -.01em;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: .5rem;
+    text-decoration: none;
+}
+.btn-primary-gradient:hover  { opacity: .94; transform: translateY(-2px); box-shadow: 0 12px 28px -4px rgba(79,70,229,.44); color: #fff; }
+.btn-primary-gradient:active { transform: translateY(0); }
+.btn-primary-gradient:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+
+.btn-action-primary {
+    background: var(--clr-gradient);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: .875rem;
+    font-weight: 600;
+    padding: .6rem 1.2rem;
+    display: inline-flex; align-items: center; gap: .4rem;
+    transition: all var(--t-normal);
+    box-shadow: 0 4px 12px -2px rgba(79,70,229,.32);
+    text-decoration: none;
+}
+.btn-action-primary:hover  { opacity: .94; transform: translateY(-2px); color: #fff; box-shadow: 0 8px 20px -4px rgba(79,70,229,.44); }
+
+.btn-action-secondary {
+    background: var(--bg-surface);
+    color: var(--txt-primary);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: .875rem;
+    font-weight: 600;
+    padding: .6rem 1.2rem;
+    display: inline-flex; align-items: center; gap: .4rem;
+    transition: all var(--t-normal);
+    text-decoration: none;
+    box-shadow: var(--shadow-xs);
+}
+.btn-action-secondary:hover { background: var(--bg-subtle); border-color: var(--border-strong); color: var(--clr-indigo); transform: translateY(-1px); }
+
+.btn-logout {
+    background: var(--bg-surface);
+    border: 1px solid #FEE2E2;
+    color: #EF4444;
+    border-radius: var(--radius-md);
+    font-size: .8125rem;
+    font-weight: 600;
+    padding: .5rem .95rem;
+    display: inline-flex; align-items: center; gap: .4rem;
+    transition: all .2s ease;
+    box-shadow: var(--shadow-xs);
+    text-decoration: none;
+}
+.btn-logout:hover { background: #FEF2F2; border-color: #FECACA; color: #DC2626; transform: translateY(-1px); }
+
+/* --------------------------------------------------------------------------
+   10. Hover lift utility
+   -------------------------------------------------------------------------- */
+.hover-lift {
+    transition: transform var(--t-normal), box-shadow var(--t-normal);
+}
+.hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   11. Flash / Alert overrides (consistent across all pages)
+   -------------------------------------------------------------------------- */
+.alert {
+    border-radius: var(--radius-md);
+    font-size: .9rem;
+    font-weight: 500;
+    border-width: 1px;
+}
+.alert-success  { background: var(--clr-success-bg); border-color: var(--clr-success-border); color: var(--clr-success); }
+.alert-danger   { background: var(--clr-danger-bg);  border-color: var(--clr-danger-border);  color: var(--clr-danger); }
+.alert-warning  { background: var(--clr-warning-bg); border-color: var(--clr-warning-border); color: var(--clr-warning); }
+.alert-info     { background: var(--clr-info-bg);    border-color: var(--clr-info-border);    color: var(--clr-info); }
+
+/* --------------------------------------------------------------------------
+   12. Reduced-motion support
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+    html { scroll-behavior: auto; }
 }

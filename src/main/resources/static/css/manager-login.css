@@ -1,182 +1,193 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-:root {
-    --mgr-bg: #090d16;
-    --mgr-card-bg: rgba(17, 24, 39, 0.75);
-    --mgr-border: rgba(255, 255, 255, 0.12);
-    --mgr-border-focus: rgba(99, 102, 241, 0.6);
-    --mgr-primary-gradient: linear-gradient(135deg, #4f46e5 0%, #2563eb 50%, #06b6d4 100%);
-    --mgr-text: #f8fafc;
-    --mgr-muted: #94a3b8;
-    --mgr-input-bg: rgba(15, 23, 42, 0.65);
-}
+/* ==========================================================================
+   MANAGER LOGIN — Premium Enterprise Admin Sign-In (Light Professional Theme)
+   ========================================================================== */
 
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: var(--mgr-bg);
-    background-image: 
-        radial-gradient(circle at 15% 15%, rgba(79, 70, 229, 0.15) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(30, 27, 75, 0.2) 0%, transparent 60%);
+    background:
+        radial-gradient(ellipse at 10% 10%, rgba(79,70,229,.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 90% 90%, rgba(124,58,237,.07) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 0%, rgba(16,24,40,.04) 0%, transparent 60%),
+        #F5F7FB;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--mgr-text);
-    margin: 0;
-    overflow-x: hidden;
+    padding: 1.5rem;
 }
 
+/* --------------------------------------------------------------------------
+   Wrapper & Card
+   -------------------------------------------------------------------------- */
 .manager-login-wrapper {
     width: 100%;
-    max-width: 450px;
-    padding: 1.5rem;
+    max-width: 460px;
     position: relative;
-    z-index: 10;
+    z-index: 1;
 }
 
-/* Glassmorphism Card */
+/* Reuse the white card style — light & professional, not dark glassmorphism */
 .glass-login-card {
-    background: var(--mgr-card-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--mgr-border);
-    border-radius: 1.25rem;
-    box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.7),
-        0 0 25px rgba(79, 70, 229, 0.12);
-    padding: 2.75rem 2.25rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(255,255,255,.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(228,231,236,.9);
+    border-radius: var(--radius-2xl);
+    box-shadow:
+        0 1px 2px rgba(16,24,40,.04),
+        0 8px 32px -8px rgba(79,70,229,.16),
+        0 0 0 1px rgba(79,70,229,.04);
+    padding: 2.75rem 2.25rem 2.25rem;
+    transition: box-shadow var(--t-normal);
 }
-
 .glass-login-card:hover {
-    box-shadow: 
-        0 30px 60px -12px rgba(0, 0, 0, 0.8),
-        0 0 35px rgba(99, 102, 241, 0.2);
+    box-shadow:
+        0 1px 2px rgba(16,24,40,.04),
+        0 16px 40px -8px rgba(79,70,229,.2),
+        0 0 0 1px rgba(79,70,229,.06);
 }
 
+/* --------------------------------------------------------------------------
+   Brand Badge (Manager — Violet accent)
+   -------------------------------------------------------------------------- */
 .manager-brand-badge {
-    width: 58px;
-    height: 58px;
-    border-radius: 16px;
-    background: var(--mgr-primary-gradient);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-size: 1.75rem;
-    margin: 0 auto 1.25rem;
-    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45);
+    width: 60px; height: 60px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #1D4ED8 0%, #4F46E5 50%, #7C3AED 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 1.7rem;
+    margin: 0 auto 1rem;
+    box-shadow: 0 8px 20px -4px rgba(79,70,229,.42);
+    position: relative;
+}
+.manager-brand-badge::after {
+    content: '';
+    position: absolute; inset: -4px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #1D4ED8 0%, #7C3AED 100%);
+    opacity: .16;
+    z-index: -1;
+    filter: blur(6px);
 }
 
 .executive-tag {
-    display: inline-block;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .7rem;
     font-weight: 700;
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: #175CD3;
+    background: #EFF8FF;
+    padding: .28rem .75rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: .65rem;
+    border: 1px solid #B2DDFF;
 }
 
+/* --------------------------------------------------------------------------
+   Form Labels & Controls (light mode, matches employee login)
+   -------------------------------------------------------------------------- */
 .form-label {
-    color: #cbd5e1;
-    font-weight: 500;
-    font-size: 0.88rem;
-    margin-bottom: 0.4rem;
+    color: var(--txt-secondary);
+    font-weight: 600;
+    font-size: .8125rem;
+    margin-bottom: .4rem;
+    display: block;
 }
 
 .glass-input-group {
-    background: var(--mgr-input-bg);
-    border: 1px solid var(--mgr-border);
-    border-radius: 0.75rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: border-color var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+    background: var(--bg-subtle);
     overflow: hidden;
-    transition: all 0.2s ease;
 }
-
 .glass-input-group:focus-within {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    border-color: var(--clr-indigo);
+    background: var(--bg-surface);
+    box-shadow: 0 0 0 4px rgba(79,70,229,.1);
 }
-
 .glass-input-group .input-group-text {
     background: transparent;
     border: none;
-    color: var(--mgr-muted);
+    color: var(--txt-muted);
+    font-size: 1rem;
     padding-left: 1rem;
+    padding-right: .5rem;
 }
-
 .glass-input-group .form-control {
     background: transparent;
     border: none;
-    color: #ffffff;
-    padding: 0.75rem 1rem 0.75rem 0.5rem;
-    font-size: 0.95rem;
+    font-size: .9375rem;
+    padding: .8rem 1rem .8rem .5rem;
+    color: var(--txt-primary);
+    font-weight: 500;
 }
+.glass-input-group .form-control:focus { box-shadow: none; background: transparent; }
+.glass-input-group .form-control::placeholder { color: var(--txt-muted); }
 
-.glass-input-group .form-control:focus {
+/* Password toggle */
+.btn-pw-toggle {
     background: transparent;
-    color: #ffffff;
-    box-shadow: none;
-}
-
-.glass-input-group .form-control::placeholder {
-    color: #64748b;
-}
-
-.btn-manager-gradient {
-    background: var(--mgr-primary-gradient);
     border: none;
-    color: #ffffff;
+    color: var(--txt-muted);
+    padding: 0 .9rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color var(--t-fast);
+    display: flex; align-items: center;
+}
+.btn-pw-toggle:hover { color: var(--clr-indigo); }
+
+/* --------------------------------------------------------------------------
+   Manager Login Button
+   -------------------------------------------------------------------------- */
+.btn-manager-gradient {
+    background: linear-gradient(135deg, #1D4ED8 0%, #4F46E5 50%, #7C3AED 100%);
+    border: none;
+    color: #fff;
     font-weight: 600;
     font-size: 1rem;
-    padding: 0.85rem 1.5rem;
-    border-radius: 0.75rem;
-    transition: all 0.25s ease;
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+    padding: .85rem 1.5rem;
+    border-radius: var(--radius-md);
+    width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: .5rem;
+    cursor: pointer;
+    transition: opacity var(--t-normal), transform var(--t-normal), box-shadow var(--t-normal);
+    box-shadow: 0 6px 18px -4px rgba(29,78,216,.38);
 }
+.btn-manager-gradient:hover { opacity: .94; transform: translateY(-2px); box-shadow: 0 12px 28px -4px rgba(29,78,216,.5); color: #fff; }
+.btn-manager-gradient:active { transform: translateY(0); }
 
-.btn-manager-gradient:hover {
-    opacity: 0.95;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5);
-    color: #ffffff;
-}
-
+/* --------------------------------------------------------------------------
+   Demo Box (light theme)
+   -------------------------------------------------------------------------- */
 .demo-box-dark {
-    background: rgba(15, 23, 42, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-left: 3px solid #38bdf8;
-    border-radius: 0.65rem;
-    padding: 0.8rem 1rem;
-    font-size: 0.84rem;
+    background: var(--bg-subtle);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: .85rem 1rem;
+    font-size: .8125rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5rem;
+    transition: background .2s;
 }
+.demo-box-dark:hover { background: var(--border-light); }
 
-.demo-box-dark strong {
-    color: #38bdf8;
-}
+/* --------------------------------------------------------------------------
+   Alert overrides for manager login (light mode now)
+   -------------------------------------------------------------------------- */
+.alert-glass-danger  { background: var(--clr-danger-bg);  border-color: var(--clr-danger-border);  color: var(--clr-danger);  border-radius: var(--radius-md); }
+.alert-glass-success { background: var(--clr-success-bg); border-color: var(--clr-success-border); color: var(--clr-success); border-radius: var(--radius-md); }
+.alert-glass-warning { background: var(--clr-warning-bg); border-color: var(--clr-warning-border); color: var(--clr-warning); border-radius: var(--radius-md); }
 
-.alert-glass-danger {
-    background: rgba(239, 68, 68, 0.15);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #fca5a5;
-    border-radius: 0.65rem;
-}
-
-.alert-glass-success {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    color: #6ee7b7;
-    border-radius: 0.65rem;
-}
-
-.alert-glass-warning {
-    background: rgba(245, 158, 11, 0.15);
-    border: 1px solid rgba(245, 158, 11, 0.3);
-    color: #fcd34d;
-    border-radius: 0.65rem;
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+    .glass-login-card { padding: 2rem 1.5rem 1.75rem; }
 }

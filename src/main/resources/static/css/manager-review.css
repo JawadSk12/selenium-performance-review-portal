@@ -1,356 +1,336 @@
 /* ==========================================================================
    MANAGER REVIEW EVALUATION STYLESHEET
-   WEEK 6 — PHASE 6.3
-   Blue Professional Corporate Theme | Bootstrap 5 | Responsive
+   Premium Enterprise HR | Unified Indigo Palette | Professional Two-Panel
    ========================================================================== */
 
-:root {
-    --ev-primary: #1d4ed8;
-    --ev-primary-hover: #1e40af;
-    --ev-bg: #f8fafc;
-    --ev-card: #ffffff;
-    --ev-text: #0f172a;
-    --ev-muted: #64748b;
-    --ev-border: #e2e8f0;
-    --ev-success: #16a34a;
-    --ev-success-bg: #dcfce7;
-    --ev-danger: #dc2626;
-    --ev-danger-bg: #fee2e2;
-    --ev-warning: #d97706;
-    --ev-warning-bg: #fef3c7;
-    --ev-radius: 0.85rem;
-    --ev-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.04);
-    --ev-shadow-hover: 0 10px 15px -3px rgba(29,78,216,0.08);
-}
-
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background-color: var(--ev-bg);
-    color: var(--ev-text);
+    background-color: var(--bg-page);
+    color: var(--txt-primary);
     min-height: 100vh;
 }
 
 /* --------------------------------------------------------------------------
-   Top Navigation Header
+   1. Sticky Evaluation Header
    -------------------------------------------------------------------------- */
 .eval-header {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--ev-border);
-    box-shadow: 0 2px 8px rgba(15,23,42,0.04);
-    padding: 0.9rem 1.75rem;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 8px rgba(16,24,40,.06);
+    padding: .85rem 1.75rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 100;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .eval-header-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    display: flex; align-items: center; gap: .75rem;
 }
 
 .eval-header-icon {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 40px; height: 40px;
+    background: var(--clr-gradient);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
     color: #fff;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 10px rgba(29,78,216,0.25);
+    font-size: 1.15rem;
+    box-shadow: 0 4px 12px -2px rgba(79,70,229,.38);
+    flex-shrink: 0;
 }
 
 .eval-header-title {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: var(--ev-text);
+    color: var(--txt-primary);
     margin: 0;
+    letter-spacing: -.02em;
 }
 
 .eval-header-subtitle {
-    font-size: 0.75rem;
-    color: var(--ev-muted);
+    font-size: .72rem;
+    color: var(--txt-secondary);
+    margin: 0;
 }
 
 /* --------------------------------------------------------------------------
-   Page Layout
+   2. Page Layout
    -------------------------------------------------------------------------- */
 .eval-container {
     max-width: 860px;
     margin: 2rem auto;
-    padding: 0 1.25rem;
+    padding: 0 1.25rem 4rem;
 }
 
 /* --------------------------------------------------------------------------
-   Employee Self-Review Panel (read-only)
+   3. Self-Review Panel (Read-Only)
    -------------------------------------------------------------------------- */
 .self-review-card {
-    background: var(--ev-card);
-    border: 1px solid var(--ev-border);
-    border-radius: var(--ev-radius);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
     padding: 1.75rem;
-    box-shadow: var(--ev-shadow);
-    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.25rem;
 }
 
 .self-review-card .card-section-title {
-    font-size: 0.8rem;
+    font-size: .72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--ev-muted);
+    letter-spacing: .06em;
+    color: var(--txt-secondary);
     margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    display: flex; align-items: center; gap: .4rem;
 }
 
 .employee-name-badge {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 800;
-    color: var(--ev-primary);
-    letter-spacing: -0.01em;
+    color: var(--clr-indigo);
+    letter-spacing: -.02em;
 }
 
 .meta-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    background: #f1f5f9;
-    border: 1px solid var(--ev-border);
-    border-radius: 9999px;
-    padding: 0.25rem 0.7rem;
-    font-size: 0.78rem;
-    color: var(--ev-muted);
+    display: inline-flex; align-items: center; gap: .3rem;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    padding: .22rem .7rem;
+    font-size: .78rem;
+    color: var(--txt-secondary);
     font-weight: 500;
 }
 
 /* Self-review score chips */
 .score-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: .75rem;
     margin-bottom: 1.25rem;
 }
 
 .score-chip {
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    border-radius: 0.65rem;
-    padding: 0.85rem 1rem;
+    background: var(--clr-indigo-light);
+    border: 1px solid var(--clr-indigo-border);
+    border-radius: var(--radius-md);
+    padding: .85rem 1rem;
     text-align: center;
+    transition: box-shadow var(--t-fast), transform var(--t-fast);
 }
+.score-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
 
 .score-chip-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--ev-muted);
-    display: block;
-    margin-bottom: 0.25rem;
+    font-size: .7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .05em;
+    color: var(--txt-secondary);
+    display: block; margin-bottom: .25rem;
 }
-
 .score-chip-value {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: var(--ev-primary);
-    line-height: 1;
+    font-size: 1.6rem; font-weight: 800;
+    color: var(--clr-indigo); line-height: 1;
 }
-
 .score-chip-max {
-    font-size: 0.75rem;
-    color: var(--ev-muted);
+    font-size: .75rem; color: var(--txt-muted);
 }
 
-/* Text areas */
+/* Text block for achievements / goals */
 .review-text-block {
-    background: #f8fafc;
-    border: 1px solid var(--ev-border);
-    border-radius: 0.6rem;
-    padding: 0.9rem 1rem;
-    font-size: 0.88rem;
-    color: var(--ev-text);
-    line-height: 1.65;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: .9rem 1rem;
+    font-size: .9rem;
+    color: var(--txt-primary);
+    line-height: 1.7;
+    white-space: pre-wrap;
 }
 
 /* --------------------------------------------------------------------------
-   Evaluation Form Panel
+   4. Evaluation Form Panel
    -------------------------------------------------------------------------- */
 .eval-form-card {
-    background: var(--ev-card);
-    border: 1px solid var(--ev-border);
-    border-left: 4px solid var(--ev-primary);
-    border-radius: var(--ev-radius);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-left: 4px solid var(--clr-indigo);
+    border-radius: var(--radius-xl);
     padding: 1.75rem;
-    box-shadow: var(--ev-shadow);
-    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 1.25rem;
 }
 
 .eval-form-card .form-label {
-    font-size: 0.85rem;
+    font-size: .8625rem;
     font-weight: 600;
-    color: var(--ev-text);
-    margin-bottom: 0.4rem;
+    color: var(--txt-primary);
+    margin-bottom: .4rem;
 }
 
+/* Score sliders inside eval form */
 .score-range-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    display: flex; align-items: center; gap: 1rem;
 }
-
 .score-range-group .form-range {
     flex: 1;
-    accent-color: var(--ev-primary);
+    accent-color: var(--clr-indigo);
+    height: 1.5rem;
 }
-
 .score-range-display {
     width: 48px;
     text-align: center;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 800;
-    color: var(--ev-primary);
-    background: #eff6ff;
-    border: 1px solid #bfdbfe;
-    border-radius: 0.5rem;
-    padding: 0.25rem 0;
+    color: var(--clr-indigo);
+    background: var(--clr-indigo-light);
+    border: 1px solid var(--clr-indigo-border);
+    border-radius: var(--radius-sm);
+    padding: .25rem 0;
+    flex-shrink: 0;
+    transition: transform var(--t-fast);
 }
 
-/* Grade Badge */
-.grade-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.45rem 1rem;
-    border-radius: 9999px;
-    font-size: 0.85rem;
-    font-weight: 700;
-}
-
-.grade-outstanding { background: #e0e7ff; color: #3730a3; }
-.grade-excellent    { background: #dcfce7; color: #15803d; }
-.grade-good         { background: #fef3c7; color: #92400e; }
-.grade-needs        { background: #fee2e2; color: #991b1b; }
-
-/* Manager Comment Textarea */
+/* Manager comment textarea */
 .eval-form-card textarea {
-    border-radius: 0.65rem;
-    border: 1px solid var(--ev-border);
-    font-size: 0.9rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-color);
+    font-size: .9rem;
+    transition: border-color var(--t-fast), box-shadow var(--t-fast);
     resize: vertical;
+    background: var(--bg-subtle);
+    color: var(--txt-primary);
+    padding: .9rem 1rem;
+    width: 100%;
+    font-family: inherit;
 }
-
 .eval-form-card textarea:focus {
-    border-color: var(--ev-primary);
-    box-shadow: 0 0 0 3px rgba(29,78,216,0.12);
+    border-color: var(--clr-indigo);
+    box-shadow: 0 0 0 4px rgba(79,70,229,.1);
     outline: none;
+    background: var(--bg-surface);
 }
+.eval-form-card textarea::placeholder { color: var(--txt-muted); }
 
 /* --------------------------------------------------------------------------
-   Calculated Result Bar
+   5. Grade Badges
+   -------------------------------------------------------------------------- */
+.grade-badge {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .42rem 1rem;
+    border-radius: var(--radius-pill);
+    font-size: .85rem; font-weight: 700;
+    border: 1px solid transparent;
+}
+.grade-outstanding { background: #E0E7FF; color: #3730A3; border-color: #C7D2FE; }
+.grade-excellent   { background: var(--clr-success-bg); color: var(--clr-success); border-color: var(--clr-success-border); }
+.grade-good        { background: var(--clr-warning-bg); color: var(--clr-warning); border-color: var(--clr-warning-border); }
+.grade-needs       { background: var(--clr-danger-bg);  color: var(--clr-danger);  border-color: var(--clr-danger-border); }
+
+/* --------------------------------------------------------------------------
+   6. Calculated Result Bar
    -------------------------------------------------------------------------- */
 .result-bar {
-    background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
-    border: 1px solid #bfdbfe;
-    border-radius: var(--ev-radius);
+    background: linear-gradient(135deg, var(--clr-indigo-light) 0%, #E0E7FF 100%);
+    border: 1px solid var(--clr-indigo-border);
+    border-radius: var(--radius-xl);
     padding: 1.25rem 1.5rem;
-    display: flex;
-    align-items: center;
+    display: flex; align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
+    gap: .75rem;
+    margin-bottom: 1.25rem;
 }
-
 .result-bar-label {
-    font-size: 0.82rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--ev-muted);
+    font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .06em;
+    color: var(--txt-secondary);
 }
-
 .result-bar-score {
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--ev-primary);
-    letter-spacing: -0.03em;
+    font-size: 2.25rem; font-weight: 900;
+    color: var(--clr-indigo);
+    letter-spacing: -.03em;
+    line-height: 1;
 }
 
 /* --------------------------------------------------------------------------
-   Action Buttons
+   7. Action Buttons — Approve / Reject / Back
    -------------------------------------------------------------------------- */
 .btn-approve {
-    background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
-    border: none;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 1rem;
-    border-radius: 0.65rem;
-    padding: 0.7rem 2rem;
-    box-shadow: 0 4px 10px rgba(22,163,74,0.25);
-    transition: all 0.2s ease;
+    background: linear-gradient(135deg, var(--clr-success) 0%, #22C55E 100%);
+    border: none; color: #fff;
+    font-weight: 700; font-size: 1rem;
+    border-radius: var(--radius-md);
+    padding: .7rem 2rem;
+    box-shadow: 0 4px 12px rgba(21,128,61,.28);
+    transition: all var(--t-fast);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: .4rem;
 }
-
-.btn-approve:hover {
-    background: linear-gradient(135deg, #15803d 0%, #16a34a 100%);
-    color: #ffffff;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(22,163,74,0.35);
-}
+.btn-approve:hover { opacity: .92; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 18px rgba(21,128,61,.4); }
+.btn-approve:active { transform: translateY(0); }
 
 .btn-reject {
-    background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-    border: none;
-    color: #ffffff;
-    font-weight: 700;
-    font-size: 1rem;
-    border-radius: 0.65rem;
-    padding: 0.7rem 2rem;
-    box-shadow: 0 4px 10px rgba(220,38,38,0.22);
-    transition: all 0.2s ease;
+    background: linear-gradient(135deg, var(--clr-danger) 0%, #EF4444 100%);
+    border: none; color: #fff;
+    font-weight: 700; font-size: 1rem;
+    border-radius: var(--radius-md);
+    padding: .7rem 2rem;
+    box-shadow: 0 4px 12px rgba(180,35,24,.25);
+    transition: all var(--t-fast);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: .4rem;
 }
-
-.btn-reject:hover {
-    background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%);
-    color: #ffffff;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(220,38,38,0.35);
-}
+.btn-reject:hover { opacity: .92; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 18px rgba(180,35,24,.38); }
+.btn-reject:active { transform: translateY(0); }
 
 .btn-back {
-    border: 1px solid var(--ev-border);
-    background: transparent;
-    color: var(--ev-muted);
+    border: 1.5px solid var(--border-color);
+    background: var(--bg-surface);
+    color: var(--txt-secondary);
     font-weight: 600;
-    border-radius: 0.65rem;
-    padding: 0.7rem 1.5rem;
-    transition: all 0.2s;
+    border-radius: var(--radius-md);
+    padding: .65rem 1.35rem;
+    transition: all var(--t-fast);
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .9rem;
 }
-
-.btn-back:hover {
-    background: #f1f5f9;
-    color: var(--ev-text);
-}
+.btn-back:hover { background: var(--bg-subtle); border-color: var(--border-strong); color: var(--txt-primary); }
 
 /* --------------------------------------------------------------------------
-   Responsive
+   8. Confirmation overlay (non-native, keyboard-accessible)
+   -------------------------------------------------------------------------- */
+.confirm-overlay {
+    position: fixed; inset: 0;
+    background: rgba(16,24,40,.45);
+    backdrop-filter: blur(6px);
+    z-index: 1050;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+}
+.confirm-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    max-width: 420px; width: 100%;
+    padding: 2rem;
+    text-align: center;
+    animation: confirmIn .25s var(--ease);
+}
+@keyframes confirmIn { from { opacity: 0; transform: scale(.95) translateY(-8px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+/* --------------------------------------------------------------------------
+   9. Responsive
    -------------------------------------------------------------------------- */
 @media (max-width: 640px) {
-    .eval-container { padding: 0 0.75rem; }
-    .eval-header { padding: 0.75rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
+    .eval-container { padding: 0 .75rem 3rem; }
+    .eval-header { padding: .75rem 1rem; }
     .score-grid { grid-template-columns: repeat(2, 1fr); }
     .result-bar { flex-direction: column; align-items: flex-start; }
+    .btn-approve, .btn-reject { padding: .65rem 1.35rem; font-size: .9rem; }
 }

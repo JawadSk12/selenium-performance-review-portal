@@ -60,12 +60,19 @@ class ManagerAuthTest {
         mockMvc.perform(get("/manager/login"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("manager-login"))
+                // Brand tag visible in the redesigned glassmorphism card header
                 .andExpect(content().string(containsString("Manager Workspace")))
+                // Form field labels
                 .andExpect(content().string(containsString("Manager Email")))
                 .andExpect(content().string(containsString("Password")))
+                // Remember-me checkbox label (exact case from template)
                 .andExpect(content().string(containsString("Remember me")))
-                .andExpect(content().string(containsString("Login")))
-                .andExpect(content().string(containsString("manager-login.css")));
+                // Submit button text in the redesigned UI
+                .andExpect(content().string(containsString("Access Manager Workspace")))
+                // Stylesheet reference confirming the correct template was rendered
+                .andExpect(content().string(containsString("manager-login.css")))
+                // Form action confirms the POST endpoint is wired correctly
+                .andExpect(content().string(containsString("action=\"/manager/login\"")));
     }
 
     @Test

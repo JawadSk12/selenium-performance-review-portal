@@ -1,155 +1,278 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-:root {
-    --primary: #4f46e5;
-    --primary-hover: #4338ca;
-    --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-    --bg-page: #f8fafc;
-    --bg-card: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --radius-lg: 1rem;
-    --radius-md: 0.75rem;
-}
+/* ==========================================================================
+   REVIEW FORM & REVIEW HISTORY STYLESHEET
+   Professional Self-Appraisal | Competency Sliders | Enterprise Tables
+   ========================================================================== */
 
 body {
-    font-family: 'Inter', sans-serif;
     background-color: var(--bg-page);
-    color: var(--text-main);
+    color: var(--txt-primary);
     min-height: 100vh;
+    margin: 0;
 }
 
+/* --------------------------------------------------------------------------
+   1. Page Containers
+   -------------------------------------------------------------------------- */
 .review-container {
     max-width: 860px;
-    margin: 2.5rem auto;
-    padding: 0 1rem;
+    margin: 2.25rem auto;
+    padding: 0 1.25rem 4rem;
 }
-
 .history-container {
-    max-width: 1040px;
-    margin: 2.5rem auto;
-    padding: 0 1rem;
+    max-width: 1080px;
+    margin: 2.25rem auto;
+    padding: 0 1.25rem 4rem;
 }
 
+/* --------------------------------------------------------------------------
+   2. Review Form Card
+   -------------------------------------------------------------------------- */
 .review-form-card {
-    background: #ffffff;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border);
-    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.07);
-    padding: 2.5rem;
+    background: var(--bg-surface);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    padding: 2.25rem 2.25rem 2rem;
+    position: relative;
+}
+.review-form-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+    background: var(--clr-gradient);
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
+/* --------------------------------------------------------------------------
+   3. Section Titles
+   -------------------------------------------------------------------------- */
 .section-title {
-    font-size: 1.15rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #f1f5f9;
+    color: var(--txt-primary);
+    margin-bottom: 1.35rem;
+    padding-bottom: .65rem;
+    border-bottom: 1.5px solid var(--border-light);
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: .55rem;
+    letter-spacing: -.01em;
 }
 
+/* --------------------------------------------------------------------------
+   4. Competency Range Sliders
+   -------------------------------------------------------------------------- */
 .slider-group {
-    background: #f8fafc;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 1.25rem 1.5rem;
-    margin-bottom: 1.25rem;
-    transition: all 0.2s ease;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.15rem 1.35rem;
+    margin-bottom: 1rem;
+    transition: background var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+    position: relative;
 }
-
-.slider-group:hover, .slider-group:focus-within {
-    background: #ffffff;
-    border-color: #cbd5e1;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+.slider-group:hover,
+.slider-group:focus-within {
+    background: var(--bg-surface);
+    border-color: var(--clr-indigo-border);
+    box-shadow: 0 4px 14px -4px rgba(79,70,229,.12);
 }
 
 .slider-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: .75rem;
+    gap: .5rem;
 }
 
 .slider-label {
     font-weight: 600;
-    font-size: 0.98rem;
-    color: var(--text-main);
+    font-size: .9rem;
+    color: var(--txt-primary);
     margin: 0;
+    display: flex; align-items: center; gap: .4rem;
+    cursor: default;
 }
 
 .score-badge {
-    background: var(--primary-gradient);
-    color: #ffffff;
+    background: var(--clr-gradient);
+    color: #fff;
     font-weight: 700;
-    font-size: 0.95rem;
-    padding: 0.3rem 0.85rem;
-    border-radius: 9999px;
-    min-width: 58px;
+    font-size: .875rem;
+    padding: .3rem .85rem;
+    border-radius: var(--radius-pill);
+    min-width: 62px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 3px 8px -2px rgba(79,70,229,.35);
+    display: inline-block;
+    flex-shrink: 0;
+    transition: transform var(--t-fast);
 }
 
+/* Custom range input */
 .form-range {
-    height: 1.4rem;
+    width: 100%;
+    height: 1.5rem;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+}
+.form-range:focus { outline: none; }
+.form-range::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 7px;
+    background: linear-gradient(to right, var(--clr-indigo) 0%, var(--clr-indigo) var(--fill-pct, 50%), var(--border-color) var(--fill-pct, 50%), var(--border-color) 100%);
+    border-radius: var(--radius-pill);
+    border: none;
+}
+.form-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px; height: 22px;
+    background: var(--clr-indigo);
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(79,70,229,.42);
+    margin-top: -7.5px;
+    transition: transform var(--t-fast), box-shadow var(--t-fast);
+    cursor: pointer;
+}
+.form-range::-webkit-slider-thumb:hover {
+    transform: scale(1.18);
+    box-shadow: 0 3px 12px rgba(79,70,229,.5);
+}
+.form-range::-moz-range-track {
+    height: 7px;
+    background: var(--border-color);
+    border-radius: var(--radius-pill);
+}
+.form-range::-moz-range-progress {
+    height: 7px;
+    background: var(--clr-indigo);
+    border-radius: var(--radius-pill);
+}
+.form-range::-moz-range-thumb {
+    width: 22px; height: 22px;
+    background: var(--clr-indigo);
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(79,70,229,.42);
     cursor: pointer;
 }
 
-.form-range::-webkit-slider-thumb {
-    background: var(--primary);
-    width: 22px;
-    height: 22px;
-    border: 3px solid #ffffff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.15s ease;
+/* --------------------------------------------------------------------------
+   5. Live Score Preview
+   -------------------------------------------------------------------------- */
+.live-score-preview {
+    background: linear-gradient(135deg, var(--clr-indigo-light) 0%, #E0E7FF 100%);
+    border: 1px solid var(--clr-indigo-border);
+    border-radius: var(--radius-lg);
+    padding: 1.15rem 1.35rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
-.form-range::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
-}
-
+/* --------------------------------------------------------------------------
+   6. Textarea Controls
+   -------------------------------------------------------------------------- */
 .form-control-textarea {
     border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    padding: 1rem;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    transition: all 0.2s ease;
+    border: 1.5px solid var(--border-color);
+    padding: .9rem 1.1rem;
+    font-size: .9375rem;
+    line-height: 1.65;
+    background: var(--bg-subtle);
+    transition: background var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+    font-family: inherit;
+    color: var(--txt-primary);
+    resize: vertical;
+    width: 100%;
 }
-
 .form-control-textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3.5px rgba(79, 70, 229, 0.15);
+    background: var(--bg-surface);
+    border-color: var(--clr-indigo);
+    box-shadow: 0 0 0 4px rgba(79,70,229,.1);
+    outline: none;
 }
+.form-control-textarea::placeholder { color: var(--txt-muted); }
 
+/* Character counter */
+.char-counter {
+    font-size: .75rem;
+    color: var(--txt-muted);
+    text-align: right;
+    margin-top: .3rem;
+    transition: color var(--t-fast);
+}
+.char-counter.near-limit { color: var(--clr-warning); }
+.char-counter.at-limit   { color: var(--clr-danger); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   7. Review History Table
+   -------------------------------------------------------------------------- */
 .table-custom {
-    background: #ffffff;
-    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+    border-radius: var(--radius-xl);
     overflow: hidden;
-    border: 1px solid var(--border);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    border: 1px solid var(--border-color);
+    margin-bottom: 0;
 }
-
 .table-custom th {
-    background: #f8fafc;
-    color: var(--text-muted);
+    background: var(--bg-subtle);
+    color: var(--txt-secondary);
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
-    padding: 1rem 1.25rem;
-    border-bottom: 2px solid var(--border);
+    font-size: .7rem;
+    letter-spacing: .07em;
+    padding: .9rem 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
 }
-
 .table-custom td {
-    padding: 1.1rem 1.25rem;
+    padding: 1.05rem 1.25rem;
     vertical-align: middle;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--border-light);
+    font-size: .9rem;
+}
+.table-custom tbody tr:last-child td { border-bottom: none; }
+.table-custom tbody tr:hover { background: var(--bg-subtle); }
+
+/* Score pill in history table */
+.score-pill-approved {
+    background: var(--clr-indigo-light);
+    color: var(--clr-indigo);
+    border: 1px solid var(--clr-indigo-border);
+    font-weight: 700;
+    padding: .2rem .7rem;
+    border-radius: var(--radius-pill);
+    font-size: .9rem;
 }
 
-.table-custom tbody tr:hover {
-    background-color: #fcfdfe;
+/* --------------------------------------------------------------------------
+   8. Detail Modal Score Boxes
+   -------------------------------------------------------------------------- */
+.score-box-modal {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: .95rem;
+    text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   9. Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .review-form-card { padding: 1.5rem; }
+    .live-score-preview { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+    .review-container, .history-container { padding: 0 .75rem 3rem; }
 }
