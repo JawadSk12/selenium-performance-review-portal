@@ -13,6 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   app:
+    build: .
     image: performance-review-portal:week11
     container_name: performance-review-app
     depends_on:
