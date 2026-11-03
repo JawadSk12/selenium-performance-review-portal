@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="icon" href="data:,">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Employee Performance Review Portal</title>
@@ -95,7 +96,7 @@
                     <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe" th:field="*{rememberMe}">
                     <label class="form-check-label text-muted" for="rememberMe">Remember me</label>
                 </div>
-                <a th:href="@{/manager/login}" class="portal-switch-link">
+                <a th:href="@{/manager-login}" class="portal-switch-link">
                     <i class="bi bi-briefcase-fill" aria-hidden="true"></i>
                     Manager Login
                 </a>

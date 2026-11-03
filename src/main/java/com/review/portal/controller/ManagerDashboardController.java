@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 /**
- * Controller handling Enterprise Manager Dashboard (Phase 6.2).
- * Completely replaces the "Manager Workspace" placeholder with the full enterprise dashboard.
+ * Controller handling Enterprise Manager Dashboard.
+ * Maps to /manager/dashboard and /manager-dashboard to guarantee conflict-free routing under Tomcat.
  */
 @Slf4j
 @Controller
-@RequestMapping("/manager")
+@RequestMapping({"/manager", "/manager-workspace"})
 @RequiredArgsConstructor
 public class ManagerDashboardController {
 
@@ -29,15 +29,14 @@ public class ManagerDashboardController {
 
     /**
      * Renders the Enterprise HR Manager Dashboard.
-     * Route: /manager/dashboard
-     * Validates manager session and sends: managerName, managerEmail, stats, pendingReviews.
+     * Routes: /manager/dashboard, /manager-workspace/dashboard, /manager-workspace
      */
-    @GetMapping("/dashboard")
+    @GetMapping({"/dashboard", ""})
     public String showManagerDashboard(HttpSession session, Model model) {
         // Check manager session
         if (session == null || session.getAttribute(ManagerAuthServiceImpl.SESSION_MANAGER_ID) == null) {
-            log.warn("Unauthenticated access attempt to /manager/dashboard. Redirecting to login.");
-            return "redirect:/manager/login?unauthorized=true";
+            log.warn("Unauthenticated access attempt to manager dashboard. Redirecting to login.");
+            return "redirect:/manager-login?unauthorized=true";
         }
 
         Manager currentManager = dashboardService.getCurrentManager(session);

@@ -2,16 +2,19 @@ package com.review.portal.controller;
 
 import com.review.portal.dto.LoginRequestDTO;
 import com.review.portal.model.Employee;
+import com.review.portal.repository.ManagerRepository;
 import com.review.portal.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -23,6 +26,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class AuthController {
 
     private final AuthService authService;
+    private final ManagerRepository managerRepository;
+
+    @GetMapping("/favicon.ico")
+    @ResponseBody
+    public ResponseEntity<Void> returnFavicon() {
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/")
     public String rootRedirect(HttpSession session) {
@@ -76,7 +86,12 @@ public class AuthController {
             return "redirect:/dashboard";
         } catch (Exception ex) {
             log.warn("Authentication failed for '{}': {}", loginRequest.getEmail(), ex.getMessage());
-            model.addAttribute("errorMessage", "Invalid email or password");
+            
+            if (loginRequest.getEmail() != null && managerRepository.existsByEmail(loginRequest.getEmail())) {
+                model.addAttribute("errorMessage", "The account '" + loginRequest.getEmail() + "' is a Manager. Please click 'Manager Login' below to sign in.");
+            } else {
+                model.addAttribute("errorMessage", "Invalid email or password");
+            }
             model.addAttribute("loginRequest", loginRequest);
             return "login";
         }

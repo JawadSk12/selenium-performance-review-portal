@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="icon" href="data:,">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manager Login - Executive Review Workspace</title>
@@ -57,7 +58,7 @@
         </div>
 
         <!-- ── Login Form ────────────────────────────────────────────── -->
-        <form th:action="@{/manager/login}" method="post" th:object="${loginRequest}" id="managerLoginForm" novalidate>
+        <form th:action="@{/manager-login}" method="post" th:object="${loginRequest}" id="managerLoginForm" novalidate>
 
             <!-- Email -->
             <div class="mb-3">

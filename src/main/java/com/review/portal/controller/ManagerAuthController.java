@@ -3,7 +3,6 @@ package com.review.portal.controller;
 import com.review.portal.dto.LoginRequestDTO;
 import com.review.portal.model.Manager;
 import com.review.portal.service.ManagerAuthService;
-import com.review.portal.service.impl.ManagerAuthServiceImpl;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
- * Controller handling Manager Authentication (Phase 6.1).
- * Completely separate from Employee AuthController.
+ * Controller handling Manager Authentication.
+ * Supports both /manager-login and /manager/login endpoints to prevent Tomcat context collisions.
  */
 @Slf4j
 @Controller
@@ -24,9 +23,9 @@ public class ManagerAuthController {
     private final ManagerAuthService managerAuthService;
 
     /**
-     * Renders the Manager Login Page (Phase 6.1).
+     * Renders the Manager Login Page.
      */
-    @GetMapping("/manager/login")
+    @GetMapping({"/manager/login", "/manager-login"})
     public String showManagerLoginForm(
             @RequestParam(required = false) String error,
             @RequestParam(required = false) String logout,
@@ -56,11 +55,9 @@ public class ManagerAuthController {
     }
 
     /**
-     * Processes Manager Login Submission (Phase 6.1).
-     * On success, establishes session with managerId, managerName, managerEmail
-     * and redirects to /manager/dashboard.
+     * Processes Manager Login Submission.
      */
-    @PostMapping("/manager/login")
+    @PostMapping({"/manager/login", "/manager-login"})
     public String processManagerLogin(
             @ModelAttribute LoginRequestDTO loginRequest,
             HttpSession session,
@@ -82,14 +79,13 @@ public class ManagerAuthController {
     }
 
     /**
-     * Terminates Manager Session (Phase 6.1).
+     * Terminates Manager Session.
      */
-    @GetMapping("/manager/logout")
+    @GetMapping({"/manager/logout", "/manager-logout"})
     public String processManagerLogout(HttpSession session, RedirectAttributes redirectAttributes) {
         log.info("Processing manager logout");
         managerAuthService.logout(session);
         redirectAttributes.addFlashAttribute("logoutMessage", "You have been logged out of the Manager Workspace.");
-        return "redirect:/manager/login?logout=true";
+        return "redirect:/manager-login?logout=true";
     }
 }
-
