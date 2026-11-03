@@ -73,6 +73,13 @@ public abstract class BaseTest {
             return;
         }
 
+        // If port 8081 is already bound (e.g. external Tomcat is running/starting), wait for it to accept requests
+        if (isPortInUse(8081)) {
+            System.out.println("[BaseTest] Port 8081 is already bound (active Tomcat instance detected). Waiting for application readiness...");
+            waitForApplicationReady();
+            return;
+        }
+
         // Verify PostgreSQL is up before attempting to boot the application
         verifyPostgreSqlAvailable();
 
@@ -173,6 +180,14 @@ public abstract class BaseTest {
             int code = conn.getResponseCode();
             conn.disconnect();
             return (code >= 200 && code < 400);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    private static boolean isPortInUse(int port) {
+        try (Socket socket = new Socket("localhost", port)) {
+            return true;
         } catch (IOException e) {
             return false;
         }
